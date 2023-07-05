@@ -15,13 +15,11 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <!--  스타일 태그  -->
 <link href="/resources/css/style.css" rel="stylesheet" >
-<title>상세보기</title>
-<script type="text/javascript">
-
-function requestAction(url){
-	viewForm.action=url;
-	viewForm.submit();
-}
+<title>수정하기</title>
+<script>
+	function deletepost(bno){
+		location.href = "/board/deleteAction?bno=" + bno;
+	}
 </script>
 </head>
 <body>
@@ -31,44 +29,43 @@ function requestAction(url){
 <!--${board}  -->
 
 <c:set  value="${board}" var="board"></c:set>
-
+ <input type="text" name ='no' value ="${board.bno}" ></input>
 <main class="container">
 
  <div class="bg-light p-5 rounded">
-    <h2>🔅상세보기🔅</h2>
+    <h2>수정하기✏<h2>
     <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
     <a class="btn btn-lg btn-primary" href="../board/list_boot" role="button">목록으로 돌아가기</a>
   </div>
 
-<form method="get" name="viewForm" accept-charset="UTF-8" >
-   <input type="text" name="bno" value="${board.bno }">
+<form action="/board/updateAction?bno=${board.bno}" method="post" accept-charset="UTF-8" >
 	<div class="mb-3">
-	  <label for="title" class="form-label">🌱제목</label>
-	  <input type="text" class="form-control"  id="title"  name ="title" value = "${board.title }"  readonly></input>
+	  <label for="title" class="form-label">📌제목</label>
+	  <input type="text" class="form-control"  id="title"  name ="title" value = "${board.title }"></input>
 	</div>
 	
 	<div class="mb-3">
-	  <label for="content" class="form-label">🌱내용</label>
-	  <textarea class="form-control" id="content" name = "content" rows="3" readonly>${board.content }</textarea>
+	  <label for="content" class="form-label">📌내용</label>
+	  <textarea class="form-control" id="content" name = "content" rows="3">${board.content }</textarea>
 	</div>
 	<div class="mb-3">
-	  <label for="writer" class="form-label">🌱작성자</label>
-	  <input type="text" class="form-control" id="writer" name ="writer" value = "${board.writer }" readonly></input>
-	</div>
-	
-		<div class="mb-3">
-	  <label for="regdate" class="form-label">🌱등록일</label>
-	  <input type="text" class="form-control" id="regdate"  name ="regdate" value = "${board.regdate }" readonly></input>
+	  <label for="writer" class="form-label">📌작성자</label>
+	  <input type="text" class="form-control" id="writer" name ="writer" value = "${board.writer }"></input>
 	</div>
 	
 		<div class="mb-3">
-	  <label for="updatedate" class="form-label">🌱수정일</label>
-	  <input type="text" class="form-control" id="updatedate"  name ="updatedate" value = "${board.updatedate }" readonly></input>
+	  <label for="regdate" class="form-label">📌등록일</label>
+	  <input type="text" class="form-control" id="regdate"  name ="regdate" value = "${board.regdate }"></input>
+	</div>
+	
+		<div class="mb-3">
+	  <label for="updatedate" class="form-label">📌수정일</label>
+	  <input type="text" class="form-control" id="updatedate"  name ="updatedate" value = "${board.updatedate }"></input>
 	</div>
 	
 	  <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-	  <button type="submit" class="btn btn-success" onclick="requestAction('/board/edit')">update</button>
-	  <button type="button" class="btn btn-danger" onclick="requestAction('/board/deleteAction')">delete</button>
+	  <button type="submit" class="btn btn-success">update</button>
+	  <button type="button" class="btn btn-danger" onclick="deletepost(${board.bno})">delete</button>
 	  </div>
 </form>
 

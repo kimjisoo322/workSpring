@@ -48,7 +48,7 @@
 </delete>
 
 <update id="updateXML">
-	update tbl_board set title =#{title}, content =#{content}, writer = #{writer},  updatedate = sysdate where bno = #{bno}
+	update tbl_board set title =#{title}, content =#{content}, writer = #{writer},   regdate = sysdate , updatedate = sysdate where bno = #{bno}
 </update>
 
 <!-- (총건수)  -->

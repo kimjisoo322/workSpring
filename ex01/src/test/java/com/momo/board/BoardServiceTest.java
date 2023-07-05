@@ -36,5 +36,25 @@ public class BoardServiceTest {
 		BoardVO board = boardService.getOne(1);
 		log.info(board);
 	}
+	@Test
+	public void updateXML() {
 
+		BoardVO board =  boardService.getOne(72);
+		board.setTitle("수정) 제목");
+		board.setContent("수정) 내용");
+		board.setWriter("수정) userJIN");
+		System.out.println("==================게시물 수정===========");
+		int res = boardService.updateXML(board);
+		log.info(res);
+	}
+
+	@Test
+	public void delete() {
+		int res =boardService.delete(72);
+		System.out.println("==========게시물 삭제========");
+		
+		log.info(res);
+	}
+	
+	
 }
