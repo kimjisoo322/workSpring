@@ -18,7 +18,7 @@ public class MemberDao {
 		Member member = null;
 		
 		String sql = 
-				String.format("select id, name, adminyn, status, grade from member "
+				String.format("select id, name, adminyn, status, grade from libmember "
 						+ "where id='%s' and pw='%s'"
 						,paramMember.getId()
 						,paramMember.getPw());

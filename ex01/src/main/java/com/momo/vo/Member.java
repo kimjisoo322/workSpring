@@ -21,6 +21,9 @@ public class Member {
 	private String id;
 	private String pw;
 	private String name;
+	private String status;
+	private String grade;
+	private String adminyn;
 	private int age;
 	
 	@DateTimeFormat(pattern = "yyyy/MM/dd")

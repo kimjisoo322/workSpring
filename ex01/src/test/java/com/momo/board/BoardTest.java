@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.momo.mapper.BoardMapper;
 import com.momo.vo.BoardVO;
+import com.momo.vo.Criteria;
+
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -40,7 +42,7 @@ public class BoardTest {
 	// boardMapper.xml 테스트 
 	@Test
 	public void getListXML() {
-		List<BoardVO> list = boardMapper.getListXML();
+		List<BoardVO> list = boardMapper.getListXML(null);
 		
 		// 반복문) list로 부터 꺼내온 값을 board에 저장
 		list.forEach(board ->{

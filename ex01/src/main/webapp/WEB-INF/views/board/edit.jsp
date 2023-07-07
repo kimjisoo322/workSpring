@@ -16,6 +16,7 @@
 <!--  스타일 태그  -->
 <link href="/resources/css/style.css" rel="stylesheet" >
 <title>수정하기</title>
+
 <script>
 	function deletepost(bno){
 		location.href = "/board/deleteAction?bno=" + bno;
@@ -24,21 +25,31 @@
 </head>
 <body>
 
+페이지번호 : ${param.pageNo} 
+${searchField }
+${searchWorld}
 <%@ include file="../common/Header.jsp" %>    
 
 <!--${board}  -->
 
 <c:set  value="${board}" var="board"></c:set>
  <input type="text" name ='no' value ="${board.bno}" ></input>
+ <input type="text" name = 'pageNo' value ="${criteria.pageNo}"></input>
+
 <main class="container">
 
  <div class="bg-light p-5 rounded">
     <h2>수정하기✏<h2>
     <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
-    <a class="btn btn-lg btn-primary" href="../board/list_boot" role="button">목록으로 돌아가기</a>
+    <a  class="btn btn-secondary w-30" href="../board/list_boot" role="button">목록으로 돌아가기</a>
   </div>
 
 <form action="/board/updateAction?bno=${board.bno}" method="post" accept-charset="UTF-8" >
+<input type ="text" name= "pageNo" value=${param.pageNo }>
+<input type ="text" name= "searchField" value=${param.searchField }>
+<input type ="text" name= "searchWorld" value=${param.searchWorld }>
+
+   <input type="text" name="bno" value="${board.bno }">
 	<div class="mb-3">
 	  <label for="title" class="form-label">📌제목</label>
 	  <input type="text" class="form-control"  id="title"  name ="title" value = "${board.title }"></input>
@@ -65,7 +76,7 @@
 	
 	  <div class="d-grid gap-2 d-md-flex justify-content-md-center">
 	  <button type="submit" class="btn btn-success">update</button>
-	  <button type="button" class="btn btn-danger" onclick="deletepost(${board.bno})">delete</button>
+	  <button type="reset" class="btn btn-secondary">reset</button>
 	  </div>
 </form>
 

@@ -28,7 +28,7 @@ public class MemberController {
 	@PostMapping("/loginAction")
 	public String loginAction(Member member, Model model) {
 		System.out.println("id : " + member.getId());
-		System.out.println("pw : " + member.getPw());
+		System.out.println("pw: " + member.getPw());
 		
 		service.login(member, model);
 		//model.addAttribute("message", member.getId() + "환영합니다.");

@@ -25,7 +25,9 @@ function requestAction(url){
 </script>
 </head>
 <body>
-
+페이지번호 : ${param.pageNo} 
+${searchField }
+${searchWorld}
 <%@ include file="../common/Header.jsp" %>    
 
 <!--${board}  -->
@@ -37,10 +39,15 @@ function requestAction(url){
  <div class="bg-light p-5 rounded">
     <h2>🔅상세보기🔅</h2>
     <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
-    <a class="btn btn-lg btn-primary" href="../board/list_boot" role="button">목록으로 돌아가기</a>
+
+    <a  class="btn btn-secondary w-30" onclick="requestAction('/board/list_boot')" href="#" role="button">목록으로 돌아가기</a>
   </div>
 
 <form method="get" name="viewForm" accept-charset="UTF-8" >
+<input type ="text" name= "pageNo" value=${param.pageNo }>
+<input type ="text" name= "searchField" value=${param.searchField }>
+<input type ="text" name= "searchWorld" value=${param.searchWorld }>
+
    <input type="text" name="bno" value="${board.bno }">
 	<div class="mb-3">
 	  <label for="title" class="form-label">🌱제목</label>

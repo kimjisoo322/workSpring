@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.momo.service.BoardService;
 import com.momo.vo.BoardVO;
+import com.momo.vo.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -28,13 +29,27 @@ public class BoardController {
 	BoardService boardService;
 
 	@GetMapping("message")
-	public void write(Model mode) {
+	public void write(Model model) {
 
 	}
+	@GetMapping("SearchForm")
+	public void wirte() {
+		
+	}
 
+	@GetMapping("memlist")
+	public void list_mem(Model model) {
+		model.addAttribute("memlist", boardService.getListMem()) ;
+	}
+	
+	/**	
+	 * 	파라메터 자동 수집 (컨트롤러)
+	 *  : 기본 생성자가 있어야 함 , 기본 생성자를 이용해서 객체를 생성  => setter메서드를 이용해서 생성
+	 * */
 	@GetMapping("list_boot")
-	public void list_boot(Model model) {
-		model.addAttribute("list", boardService.getListXML());
+	public void list_boot(Model model, Criteria criteria) {
+		boardService.getListXML(criteria, model);
+		//model.addAttribute("list",boardService.getListXML(criteria, model); );
 	}
 
 	@GetMapping("view")
@@ -55,7 +70,7 @@ public class BoardController {
 
 	// void => /board/write
 	// return "write"; => web-inf/views/write.jsp
-	@PostMapping("write")
+	@PostMapping("writeAction")
 	public String writeAction(BoardVO board, Model model, RedirectAttributes rttr) {
 		// board에 bno가 저장되어있음 (insertSelectKey) = 파라메터로 넘길 때 주소값을 가지고 있음
 		int res = boardService.insertSelectKey(board);
@@ -75,8 +90,11 @@ public class BoardController {
 			return "/board/message";
 		}
 	}
-	
-	
+	/*
+	 * 	수정하기 
+	 *     - bno를 파라메터로 받아야 함 
+	 *     - 버튼의 액션이 달라짐
+	 * */
 	@GetMapping("edit")
 	public String updateXML(int bno, Model model) {
 		System.out.println("===================한 건 조 회 !============");
@@ -84,8 +102,9 @@ public class BoardController {
 		model.addAttribute("board", boardService.getOne(bno));
 		return "/board/edit";
 	}
+	
 	@PostMapping("updateAction")
-	public String updateXML(BoardVO board, RedirectAttributes rttr, Model model) {
+	public String updateXML(BoardVO board, RedirectAttributes rttr, Model model, Criteria criteria) {
 
 		
 		 BoardVO bd = boardService.getOne(board.getBno());
@@ -94,13 +113,16 @@ public class BoardController {
 		 bd.setContent(bd.getContent());
 		 bd.setWriter(bd.getWriter());
 		 
+		 boardService.getListXML(criteria, model);
+		 
 		int res = boardService.updateXML(board);
 		log.info(res);
 
 		String message = "";
 		if (res > 0) {
-			message = "수정되었습니다.";
+			message = res + "건 수정되었습니다.";
 			rttr.addFlashAttribute("message", message);
+			
 			return "redirect:/board/list_boot";
 		} else {
 			message = "수정 중 오류가 발생하였습니다.";

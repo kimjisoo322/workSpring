@@ -5,13 +5,19 @@ import java.util.List;
 import org.apache.ibatis.annotations.Select;
 
 import com.momo.vo.BoardVO;
+import com.momo.vo.Criteria;
+import com.momo.vo.Member;
 
 public interface BoardMapper {
 	
 	@Select("select * from tbl_board")
 	public List<BoardVO> getList();
 	
-	public List<BoardVO> getListXML();
+	// 리스트 조회 + 검색 조건 추가
+	public List<BoardVO> getListXML(Criteria criteria);
+	
+	// 멤버 조회 
+	public List<Member> getListMem();
 	
 	// INSERT, UPDATE, DELETE 반환 = int 
 	public int insertXML(BoardVO board);
@@ -29,4 +35,9 @@ public interface BoardMapper {
 	
 	// 총 건수 조회 
 	public int getTotalCnt();
+
+	public int getTotalCnt(Criteria criteria);
+
+	
+	
 }	

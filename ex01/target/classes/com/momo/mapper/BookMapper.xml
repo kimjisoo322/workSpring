@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!--  mapper의 interface 풀 경로로 작성 -->
+<mapper namespace="com.momo.mapper.BookMapper">
+
+
+<!-- book 리스트 조회 -->
+<select id="bookList" resultType="com.momo.vo.Book">
+	<![CDATA[select * from (
+		 select rownum rn, t.* from ( 
+			select no, title, rentyn, author, publisher, decode(rentyn, 'Y', '대여중', '') rentstr from book  where no>0 ]]> <include refid="criteria"></include> order by no desc		 
+		  )t
+ 	)where rn between #{startNo} and #{endNo}
+</select>
+
+<!-- 총 건수 출력 -->
+<select id="totalCnt" resultType="int">
+	select count(*) from book where 1=1 <include refid="criteria"></include>
+</select>
+
+<sql id="criteria">
+	<choose>
+		<when test="searchField == 'title'">
+			and title like '%'||#{searchWorld}||'%'
+		</when>
+		<when test="searchField == 'author'">
+			and author like '%'||#{searchWorld}||'%' 
+		</when>
+		<when test="searchField == 'publisher'">
+			and publisher like '%'||#{searchWorld}||'%' 
+		</when>
+	</choose>
+</sql>
+
+<!--  상세보기 : 한 건만 출력  -->
+<select id ="getOne" resultType="com.momo.vo.Book">
+	select * from book where no=#{no}</select>
+	
+<!--  등록하기  -->
+
+<insert id="insertKey">
+	<selectKey keyProperty="no" order="BEFORE" resultType="int">
+		select seq_book_no.nextval from dual
+	</selectKey>
+	INSERT INTO book (no, title, author, publisher) VALUES (#{no}, #{title}, #{author}, #{publisher})
+</insert>
+
+<!-- 삭제하기 -->
+<select id="delete">
+	delete from book where no = #{no} </select>
+
+</mapper>
