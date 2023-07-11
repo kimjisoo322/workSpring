@@ -28,6 +28,14 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 
+	
+	@GetMapping("/reply/test")
+	public String test() {
+		
+		 // reply/test.jsp 를 반환
+		return "reply/test";
+	}
+	
 	@GetMapping("message")
 	public void write(Model model) {
 

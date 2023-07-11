@@ -50,7 +50,7 @@ public class BoardServiceTest {
 
 	@Test
 	public void delete() {
-		int res =boardService.delete(72);
+		int res =boardService.delete(64);
 		System.out.println("==========게시물 삭제========");
 		
 		log.info(res);

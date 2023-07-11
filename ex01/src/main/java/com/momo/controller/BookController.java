@@ -55,9 +55,10 @@ public class BookController {
 	public void write() {
 		
 	}
+
+	// Controller의 역할 (= 페이지 전환  / return '페이지경로'; 이 페이지를 반환해줘! ) 
 	@PostMapping("writeAction")
-	public void writeAction(Book book, Model model, RedirectAttributes rttr) {
-		bookService.insertKey(book, model, rttr);
-		//log.info(" 등록 : " + bookService.insertKey(book, model, rttr));
+	public String writeAction(Book book, Model model, RedirectAttributes rttr) {
+		return bookService.insertKey(book, model, rttr);
 	}
 }

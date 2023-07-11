@@ -19,9 +19,11 @@
                         <div class="panel-footer">
                             ${book.publisher }
                         </div>
+                        
                     </div>
                 </div>
 			</div>
 		</div>
 		<!--  Footer -->
+
 <%@include file="./Footer.jsp" %>

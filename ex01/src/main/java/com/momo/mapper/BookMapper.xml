@@ -11,7 +11,7 @@
 <select id="bookList" resultType="com.momo.vo.Book">
 	<![CDATA[select * from (
 		 select rownum rn, t.* from ( 
-			select no, title, rentyn, author, publisher, decode(rentyn, 'Y', '대여중', '') rentstr from book  where no>0 ]]> <include refid="criteria"></include> order by no desc		 
+			select no, title, rentyn, author, publisher, decode(rentyn, 'Y', '대여중', '대여가능') rentstr from book  where no>0 ]]> <include refid="criteria"></include> order by no desc		 
 		  )t
  	)where rn between #{startNo} and #{endNo}
 </select>

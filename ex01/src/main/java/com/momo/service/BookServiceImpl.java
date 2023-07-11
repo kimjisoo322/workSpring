@@ -66,7 +66,7 @@ public class BookServiceImpl implements BookService{
 		log.info("=============res " + res);
 		
 		if(res > 0) {
-			log.info("=================왔니?");
+			
 			message = book.getNo() + "번 글이 등록되었습니다.";
 			log.info(message);
 			rttr.addFlashAttribute("message", message);
