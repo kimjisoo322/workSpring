@@ -16,7 +16,7 @@
 			let bno = document.querySelector('#bno').value;
 			let page = document.querySelector('#pageNo').value;
 			
-		 fetchGet('/reply/list/' + bno + '/' + page, replyView);
+		  fetchGet('/reply/list/' + bno + '/' + page, replyView);
 /* 		// url 요청 결과를 받아옴 == getMapping 방식
 		fetch('/reply/list/' + bno + '/' + page)
 			// 받아온 결과 response를 json object 형식으로 변환 
