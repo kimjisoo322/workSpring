@@ -1,153 +1,163 @@
-//  [ 자주 사용하는 fetch url 함수로 정의해놓기 ]
-console.log("reply.js 연결 완★")
- 		// get 방식 요청
-	function fetchGet(url, callback){
-	
-		console.log(url);
-		console.log(callback);
-		
-		// url 요청
-		try{
-		fetch(url)
-			// 요청결과 json 문자열을 javascript 객체로 변환 
-		.then(response => response.json())
-			// 콜백함수 호출 
-		.then(map => callback(map));
-		}catch(e){
-			console.log("fathGet "+ e);
-		}
-	}
-		// post 방식 요청
-	function fetchPost(url, obj, callback){
-		console.log(url);
-		console.log(callback);
-		
-		// url 요청
-		try{
-		fetch(url, {
-				method : 'post'
-				, headers : {'Content-Type' : 'application/json'}
-				, body : JSON.stringify(obj)
-		})
-			// 요청결과 json 문자열을 javascript 객체로 변환 
-		.then(response => response.json())
-			// 콜백함수 호출 
-		.then(map => callback(map));
-		}catch(e){
-			console.log("fatchPost "+ e);
-		}
-	}
+console.log('reply.js=========')
 
-	// 댓글 목록 함수 
-	function getReplyList(){
-		let bno =document.querySelector('#bno').value;
-		let page =document.querySelector('#pageNo').value;
-		console.log("bno : " , bno);
-		console.log("page : ", page);
-		
-		console.log('/reply/list/' + bno + '/' + page);
-		console.log(`/reply/list/${bno}/${page}`);
-		 
-		/*		     url : 요청 경로 
-		 *  	callback : 응답 결과를 실행시킬 함수 
-		 * */
-				// /reply/list/{bno}/{page}
-		fetchGet(`/reply/list/${bno}/${page}`, replyView);
-	}	
-	// list를  화면에 출력하는 함수 
-	function replyView(map){
-		let list = map.list;
-		let pageDto = map.pageDto;
-		let criteria = map.criteria;
-		
-		console.log("list : " , list);
-		console.log("pageDto: " , pageDto);
-		
-		if(list.length != 0){
-			
-			let replyDivStr =''
+// get방식 요청
+function fetchGet(url, callback){
+	try{
+		// url 요청
+		fetch(url)
+			// 요청결과 json문자열을 javascript 객체로 반환
+			.then(response => response.json())
+			// 콜백함수 실행
+			.then(map => callback(map));			
+	}catch(e){
+		console.log('fetchGet',e);
+	}
+}
+
+// post방식 요청
+function fetchPost(url, obj, callback){
+	try{
+		// url 요청
+		fetch(url
+				, {
+					method : 'post'
+					, headers : {'Content-Type' : 'application/json'}
+					, body : JSON.stringify(obj)
+				})
+			// 요청결과 json문자열을 javascript 객체로 반환
+			.then(response => response.json())
+			// 콜백함수 실행
+			.then(map => callback(map));			
+	}catch(e){
+		console.log('fetchPost', e);
+	}
 	
-			+ '<table class="table text-break text-center">'
-			+' <thead>' 
-			+ ' <tr>' 
-			+ '   <th scope="col" class= "col-2">#</th>'
-			+ '     <th scope="col" class= "col-3">댓글</th>'
-			+ ' 	<th scope="col" class= "col-3">작성자</th>'
-			+ ' </tr>'
-			+ '</thead>'
-			+ '<tbody>';
-			
-			list.forEach(reply => {
-				replyDivStr +=
-					' <tr id="tr'+reply.rno+'" data-value= "'+reply.reply+'">'
-				+  ' <th scope="row">'+reply.rno+'</th>' 
-				+   	'<td class = "text-start fst-italic">'+reply.reply
-				+ ' '
-				+ 		'<i class="fa-solid fa-delete-left" onclick="replyDelete('+reply.rno+')"></i>'
-				+ ' '
-				+ 		'<i class="fa-solid fa-pencil" onclick="replyUpdate('+reply.rno+')"></i></td>'   
-				+   	'<td class = "fst-italic">'+reply.replyer+' <br>' +reply.replyDate+' </td>'  
-				+   '</tr>';
-			
-			});
-			
-			replyDivStr +=
-				' </tbody>'
-				+ '</table>';
-			
-			replyDiv.innerHTML  = replyDivStr;
-			
-		
-			// 페이지블럭 생성 
-			let pageBlock = '';                                        
-			pageBlock += 
-			`<nav aria-label="Page navigation example">`
-			 +	`<ul class="pagination justify-content-center">`;
+}
+
+
+// 댓글 조회및 출력
+function getReplyList(){
+	let bno = document.querySelector('#bno').value;
+			// 수정★  여기서 가져오는 건 name = pageReply인 댓글 pageNo
+	let page = document.querySelector('#pageReply').value;
+	console.log('bno : ', bno);
 	
-			
-			if(pageDto.prev){
-				pageBlock += ''
-					+ 	`<li class="page-item" onclick = "getPage(${pageDto.startNo-1})">`
-					+ 		`<a class="page-link">Previous</a>`
-					+ 	`</li>`;
-			}
-			for(i= pageDto.startNo; i<= pageDto.endNo; i++){
-				pageBlock += 
-						` <li class="page-item" onclick ="getPage(${i})">`
-					+		`<a class="page-link" href="#">${i}</a>`
-					+	`</li>`;
-			}
-			
-			if(pageDto.next){
-				 pageBlock +=
-					 `<li class="page-item" onclick="getPage(${pageDto.endNo+1})">`
-				+ 		`<a class="page-link" href="#">Next</a>`
-				+	`</li>`
-				+  `</ul>`
-				+`</nav>`;
-				replyDiv.innerHTML  += pageBlock;
-			}
-			
-			
-		}else{
-			replyDiv.innerHTML = '';
-			replyDiv.innerHTML +=
+	console.log('/reply/list/' + bno + '/' + page);
+	console.log(`/reply/list/${bno}/${page}`);
+	
+	// url : 요청경로
+	// callback : 응답결과를 받아 실행시킬 함수
+	fetchGet(`/reply/list/${bno}/${page}`, replyView)
+	
+}
+
+// 리스트 결과를 받아서 화면에 출력
+function replyView(map){
+	let list = map.list;
+	let pageDto = map.pageDto;
+	let criteria = map.criteria;
+	console.log(list);
+	console.log('pageDto=============', pageDto);
+	console.log("criteria=====", criteria);
+	
+	// 리스트 사이즈를 확인하여 메세지 처리
+	if(list.length == 0){
+		replyDiv.innerHTML = '';
+		replyDiv.innerHTML +=
 				'<br>'
 			+ '<div class="alert alert-primary" role="alert">'
 			+' 댓글이 없습니다😥	'
 			+'</div>';
-			
+	} else {
+		
+		
+		let replyDivStr = 
+			''
+			+ '<table class="table text-break text-center"">                       '
+			+ '  <thead>                                   '
+			+ '    <tr>                                    '
+			+ '      <th scope="col" class="col-2">#</th>                '
+			+ '      <th scope="col" class="col-3">댓글</th>            '
+			+ '      <th scope="col" class="col-3">작성자</th>             '
+			+ '    </tr>                                   '
+			+ '  </thead>                                  '
+			+ '  <tbody>                                   ';
+		
+		// 리스트를 돌며 댓글목록을 생성
+		list.forEach(reply => {
+			replyDivStr +=  
+			  '    <tr id="tr'+reply.rno+'" data-value="'+reply.reply+'">                                    '
+			+ '      <th scope="row">' + reply.rno + '</th>                '
+			+ '      <td class="text-start fst-italic">' + reply.reply 
+			+ ' '
+			+ ' 		<i class="fa-solid fa-delete-left" onclick="replyDelete('+ reply.rno +')"></i>'
+			+ ' '
+			+ '			<i class="fa-solid fa-pencil" onclick="replyUpdate('+ reply.rno +')"></i>'		
+			+ '		 </td>                         '
+			+ '      <td class = "fst-italic">' + reply.replyer
+			+ '			<br>' + reply.replydate		
+			+ '		 </td>                         '
+			+ '    </tr>									';    	
+		})
+			                               
+		replyDivStr += '  </tbody>                           '
+						+ '</table>                          ';
+
+		// 화면에 출력
+		replyDiv.innerHTML = replyDivStr;
+		
+		// 페이지 블럭 생성 ( 페이징 )
+		let pageBlock ='';
+		
+	 	pageBlock += // 이전 
+		  '<nav aria-label="...">'
+		 +  '<ul class="pagination justify-content-center">';
+		 
+		 // 이전버튼 (prev 블럭 보여주기)
+		 if(pageDto.prev){
+		 	 pageBlock += '' 
+			    + '<li class="page-item"'
+			    + 'onclick ="getPage('+(pageDto.startNo-1)+')">' 
+		 		+ 	'<a class="page-link">Previous</a>' 
+		 		+ '</li>' ; 
+		 }
+		 
+		// i 가 시작번호 부터 1씩 증가해서 끝번호와 같아질때까지 반복
+		 for(i=pageDto.startNo; i<=pageDto.endNo; i++){
+				// pageNo하고 i가 같으면 active 처리 	
+			 let activeStr = (criteria.pageNo == i)? 'active' : '';
+				
+			 pageBlock +=	
+				'<li class="page-item '+activeStr+'"'
+			 + 'onclick="getPage('+i+')">'
+			 + '<a class="page-link" href="#">'+i+'</a></li>';
 		}
-	
+		
+		// 다음버튼 (next 블럭 보여주기)
+		 if(pageDto.next){
+			 pageBlock += ''
+		 		+ '<li class="page-item" onclick ="getPage('+(pageDto.endNo+1)+')">'
+		 		+   '<a class="page-link" href="#">Next</a>'
+		  		+ '</li>' ;
+		 }
+		 
+		 pageBlock += 
+		 			'</ul>'
+				+'</nav>';
+		
+		replyDiv.innerHTML += pageBlock;
 	}
-	
-	// 페이징처리 
+}
+
+	// 페이징 처리
 	function getPage(page){
+		// form에 있는 페이지번호 
+		// 수정★
 		document.querySelector('#pageReply').value = page;
 		getReplyList();
 	}
-	
-		// 답글 등록 버튼 
+
+	// 답글 등록 버튼 
 	function replyWrite(){
 		/**
 		 * url (요청경로) : /reply/insert
@@ -214,5 +224,17 @@ console.log("reply.js 연결 완★")
 			// 등록 실패 			
 			alert(map.message);
 		}
-	}
-	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

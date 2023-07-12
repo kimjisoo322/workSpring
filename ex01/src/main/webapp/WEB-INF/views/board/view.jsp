@@ -116,7 +116,7 @@ ${searchWorld}
 <br>
 <div class="input-group">
   <span class="input-group-text">댓글📧</span>
-  페이징
+  <!-- 수정★ -->
   <input type ="text" name= "pageReply" value="${param.pageNo }" id = "pageReply" >
   <input type="text" aria-label="First name" class="form-control" id = "replyer" value="작성자">
   <input type="text" aria-label="First name" class="form-control" id = "reply" placeholder="댓글을 입력해주세요" >

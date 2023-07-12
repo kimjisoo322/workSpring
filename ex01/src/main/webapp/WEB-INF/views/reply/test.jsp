@@ -264,7 +264,7 @@
 </head>
 <body>
 <h4> 댓글남기기📧</h4>
-<!--  <input type="text" name="bno" value="74" id ="bno" hidden> -->
+<input type="text" name="bno" value="85" id ="bno" hidden> 
 <input type="text" name="page" value="1" id ="pageNo" hidden>
 
 <div class="input-group mb-3">
