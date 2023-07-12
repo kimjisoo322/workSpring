@@ -23,7 +23,7 @@
 	insert into tbl_reply(rno, bno, reply, replyer, replyDate) values (#{rno}, #{bno}, #{reply}, #{replyer}, sysdate)
 </insert>
 
-<!-- 총 건수 출력 -->
+<!-- 총 건수 출력 = 게시글에 있는 댓글 수  -->
 <select id="totalCnt" resultType="int">
 	select count(*) from tbl_reply where bno = #{bno}
 </select>

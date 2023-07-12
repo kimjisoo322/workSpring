@@ -1,6 +1,5 @@
 package com.momo.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +28,7 @@ public class BookController {
 	public void write(Model mode) {
 
 	}
+	
 	
 	//return "/book/list";
 	//->  /WEB-INF/views /book/list.jsp
@@ -59,6 +59,31 @@ public class BookController {
 	// Controller의 역할 (= 페이지 전환  / return '페이지경로'; 이 페이지를 반환해줘! ) 
 	@PostMapping("writeAction")
 	public String writeAction(Book book, Model model, RedirectAttributes rttr) {
-		return bookService.insertKey(book, model, rttr);
+		int res = bookService.insertKey(book);
+		
+		String message = "";
+		log.info("=============res " + res);
+		
+		if(res > 0) {
+			message = book.getNo() + "번 글이 등록되었습니다.";
+			log.info(message);
+			rttr.addFlashAttribute("message", message);
+			return "redirect:/book/list";
+		}else {
+			message ="등록 오류! (service 확인)";
+			model.addAttribute("message", message);
+			return "/book/message";
+		}
+	
 	}
+	
+	
+	  // 도서 삭제
+	
+	 @GetMapping("deleteAction") 
+	 public String deleteAction(String delNo, Model model){ 
+		return ""; 
+	 }
+	 
+	
 }

@@ -30,8 +30,8 @@
   						<div class="col-md-10">
   						<div class="col-md-offset-3">
     					<div class="form-group has-success">
-       				 <label class="control-label" for="inputSuccess"> 🌱 제목</label>
-        			<input type="text" class="form-control " id="inputSuccess" name ="title">
+       				 <label class="control-label" for="inputSuccess" > 🌱 제목</label>
+        			<input type="text" class="form-control " id="inputSuccess" name ="title" required>
      						 </div>
      						 </div>
     						</div>
@@ -42,7 +42,7 @@
   						<div class="col-md-offset-3">
     					<div class="form-group has-success">
        				 <label class="control-label" for="inputSuccess"> 🌱저자</label>
-        			<input type="text" class="form-control " id="inputSuccess" name="author">
+        			<input type="text" class="form-control " id="inputSuccess" name="author" required>
      						 </div>
      						 </div>
     						</div>
@@ -54,7 +54,7 @@
   						<div class="col-md-offset-3">
     					<div class="form-group has-success">
        				 <label class="control-label" for="inputSuccess"> 🌱출판사</label>
-        			<input type="text" class="form-control " id="inputSuccess" name="publisher">
+        			<input type="text" class="form-control " id="inputSuccess" name="publisher" required>
      						 </div>
     						</div>
     						</div>

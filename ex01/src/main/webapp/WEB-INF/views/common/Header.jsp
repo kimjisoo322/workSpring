@@ -14,12 +14,16 @@
 
 <title>Insert title here</title>
 </head>
+<!-- fontawesome 키트 붙이기  -->
+<script src="https://kit.fontawesome.com/59843f4445.js" crossorigin="anonymous"></script>
+
 <script type ="text/javascript">
   /*
   			메세지 모달창으로 띄우기 
   */
 	let msg = '${message}';
-	 	window.onload = function(){
+
+	window.addEventListener('load', function(){
 			if(msg != ''){
 				// 메세지 출력
 			 document.querySelector(".modal-body").innerHTML = msg;
@@ -35,7 +39,9 @@
 			myModalEl.addEventListener('hidden.bs.modal', event => {
 
 			});
-	}
+			
+	 	});
+	
 </script>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">

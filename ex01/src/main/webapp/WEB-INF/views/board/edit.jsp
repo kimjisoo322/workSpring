@@ -75,7 +75,7 @@ ${searchWorld}
 	</div>
 	
 	  <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-	  <button type="submit" class="btn btn-success">update</button>
+	  <button type="submit" class="btn btn-outline-primary">update</button>
 	  <button type="reset" class="btn btn-secondary">reset</button>
 	  </div>
 </form>

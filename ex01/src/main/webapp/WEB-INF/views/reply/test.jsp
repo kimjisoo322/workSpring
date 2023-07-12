@@ -26,12 +26,6 @@
 */
 		}
 		
-		// 페이징 ★
-		function getPage(page){
-			document.querySelector('#pageNo').value = page;
-			getList();
-		}
-		
 /** 리스트 출력 담당*/
 	//★2. list를 화면에 출력
 		function replyView(map){
@@ -49,10 +43,17 @@
 			// replyDiv에 답글 출력
 		replyDiv.innerHTML = '';
 		 
-		list.forEach((reply, index) =>{
+			//  replyDiv 댓글 화면 출력 (연속으로 출력하기 위해서 forEach구문 사용)
+			/**
+	          Controller에서  list 변수가 List 객체를 참조하고 있고, 
+	                       해당 List 객체의 요소가 Reply 객체인 경우, JavaScript 코드에서 list.forEach 구문을 사용하여 Reply 객체의 속성에 접근 가능
+					  => 그렇기 때문에 reply.reply가 가능함! 
+			*/
+
+			list.forEach((reply, index) =>{
 			console.log(" ========= replyDiv 출력 ========");
 			replyDiv.innerHTML 	+=
-				
+				// 반복되는 곳에 id와 index를 통해 수정하기 버튼을 누르면 해당 영역에 화면 요소가 나오도록 함
 			'<figure id="reply'+index+'" data-value="'+reply.reply+'">'
 			+ 		'<blockquote class="blockquote">'
 			+ 			'<p> '+reply.reply 
@@ -74,8 +75,9 @@
 			replyDiv.innerHTML += '<br>' + reply.replyer;
 			replyDiv.innerHTML += '<br>' + reply.replyDate;	 */
 		});		
-
-			// 페이지 블럭 생성
+	
+					  
+			// 페이지 블럭 생성 ( 페이징 )
 			let pageBlock ='';
 			
 		 	pageBlock += // 이전 
@@ -116,16 +118,17 @@
 			
 			replyDiv.innerHTML += pageBlock;
 	}       
-		    
-	/* 	<c:forEach begin = "${pageDto.startNo }" end ="${pageDto.endNo}" var ="i">
-	    <li class="page-item"><a class="page-link ${i eq criteria.pageNo? 'active':'' }" onclick='go(${i})'>${i}</a></li>
-	    </c:forEach> */
-		    
-		// 댓글 삭제 
+	
+	
+		// ★ 페이징
+		function getPage(page){
+			document.querySelector('#pageNo').value = page;
+			getList();
+		}
+	
+		// ★ 댓글 삭제 
 		function deleteReply(rno){
-			fetch('/reply/delete/'+ rno)
-			.then(response => response.json())
-			.then(map => replyRes(map))
+			fetchGet('/reply/delete/'+ rno, replyRes);
 		}
 	
 		 // 수정 화면 보여주기  ( index 요소 선택해서 innerHTML로 화면 요소 보여주기 ) 
@@ -147,7 +150,7 @@
 		 		+'</div>';
 
 		}	
-		 // 수정하기 
+		 // 수정하기 (onClick 이벤트 실행 )
 		function updateReplyAction(rno){
 			
 			// 0. 파라메터 수집 (id의 value 값 가져오기)
@@ -162,25 +165,13 @@
 			};
 			
 			// 2. 내가 만든 객체를 json 문자열 타입으로 변환 
-			let replyJson = JSON.stringify(replyObj);
-			
-			console.log("replyJson", replyJson);
-			
-			// 3. 서버에 요청 (url)
-			fetch('/reply/update' , {method : 'post'
-											, headers : {'Content-Type' : 'application/json'}
-											, body : replyJson})
-			// 4. 응답 처리 
-			.then(response => response.json())
-			.then(map => replyRes(map));
-			 
+			fetchPost('/reply/update' , replyObj, replyRes );
 		}
 
 	// 버튼이 생성되고 난 후 이벤트 부여 = window.oncload 생성
 	window.onload = function(){
 		// 리스트 조회 및 출력 
 		getList();
- //  --> 리스트 호출하고 맨 처음 불러져 올 때, page는 1페이지!!  
  
 		replyBtn.addEventListener('click', function(){
 			//alert("댓글 작성");
@@ -202,10 +193,8 @@
 					replyer : replyer
 			};
 
-			
 			// 서버에 요청 
 			fetchPost('/reply/insert', replyObj, replyRes)
-			
 			
 			// 2. 내가 만든 객체를 json 문자열 타입으로 변환 
 			/* let replyJson = JSON.stringify(replyObj);
@@ -275,7 +264,7 @@
 </head>
 <body>
 <h4> 댓글남기기📧</h4>
- <input type="text" name="bno" value="85" id ="bno" hidden>
+<!--  <input type="text" name="bno" value="74" id ="bno" hidden> -->
 <input type="text" name="page" value="1" id ="pageNo" hidden>
 
 <div class="input-group mb-3">

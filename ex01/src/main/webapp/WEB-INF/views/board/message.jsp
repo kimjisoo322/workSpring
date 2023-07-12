@@ -19,6 +19,7 @@
  	  	  	 -> 모달창이 닫히면서 발생하는 이벤트 (hidden.bs.modal)에 뒤로 가기 추가
  */
 	let msg = '${message}';
+//	let msg = "야호";
 /* 	if(msg != ''){
 		alert(msg);
 		history.go(-1);
@@ -35,7 +36,7 @@
 		const myModalEl = document.getElementById('myModal')
 		myModalEl.addEventListener('hidden.bs.modal', event => {
 			history.go(-1);
-		})
+		});
 }
 </script>
 
@@ -66,13 +67,6 @@
   </div>
 </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-<!--  js 는 body끝 태그 위 -->
-<!-- <script type="text/javascript">
-	const myModal = new bootstrap.Modal('#myModal', {
-		  keyboard: false
-	})
-	myModal.show();
 
-</script> -->
 </body>
 </html>

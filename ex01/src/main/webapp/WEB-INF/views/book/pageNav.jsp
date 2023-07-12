@@ -18,16 +18,6 @@
 		document.searchForm.submit();
 	}
 	
-	function deletePost(){
-		delNoList = document.querySelectorAll("[name=delNo]:checked");
-		let delNo ="";
-		
-		delNoList.forEach((e)=>{
-			delNo += e.value +',';
-		});
-		
-		delNo = delNo.substr(0, delNo.lengh-1);
-	}
 </script>
 <title>페이지블럭</title>
 
@@ -53,9 +43,6 @@
     </li>
   </ul>
 
-   <div class ='form-inline pull-right'>
-                <button type="button" class="btn btn-outline btn-danger" onclick="deletePost()">도서 삭제하기</button>
-              	  </div>
 </nav>
 
 </div>

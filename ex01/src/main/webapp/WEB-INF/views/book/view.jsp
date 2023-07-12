@@ -24,6 +24,9 @@
                 </div>
 			</div>
 		</div>
+	
+		<!--  댓글  -->
+		
 		<!--  Footer -->
-
+	
 <%@include file="./Footer.jsp" %>

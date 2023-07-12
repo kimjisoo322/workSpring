@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
 <!--  Header -->
 <%@include file="./Header.jsp" %>
 
@@ -78,6 +79,11 @@
                                 </c:forEach>
                             </table>
                               </form>
+                              
+                         <!--  도서 삭제  -->     
+   					<div class ='form-inline pull-right'>
+                		<button type="button" class="btn btn-outline btn-danger" onclick="deletePost()">도서삭제</button>
+              	  	</div>
                             <!--  페이징  -->
                             <%@include file="../book/pageNav.jsp" %>
                             

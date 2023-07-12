@@ -31,7 +31,7 @@
 <body>
 <!--  페이지 블럭 생성  -->
 <nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-end">
+  <ul class="pagination justify-content-center">
 
     <li class="page-item ${ pageDto.prev ? '':'disabled'}">
       <a class="page-link" onclick='go(${pageDto.startNo-1})'>Previous</a>

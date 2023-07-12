@@ -58,25 +58,10 @@ public class BookServiceImpl implements BookService{
 
 	// 등록하기 
 	@Override
-	public String insertKey(Book book, Model model, RedirectAttributes rttr) {
-		
-		int res = bookMapper.insertKey(book);
-		
-		String message = "";
-		log.info("=============res " + res);
-		
-		if(res > 0) {
-			
-			message = book.getNo() + "번 글이 등록되었습니다.";
-			log.info(message);
-			rttr.addFlashAttribute("message", message);
-			return "redirect:/book/list";
-		}else {
-			message ="등록 오류! (service 확인)";
-			model.addAttribute("message", message);
-			return "/book/message";
-		}
+	public int insertKey(Book book) {
+		return bookMapper.insertKey(book);
 	}
+	// 삭제하기 
 	
 	
 

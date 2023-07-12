@@ -22,4 +22,6 @@ public class Book {
 	private String startdate; // 대여일
 	private String returndate; //반납일
 	private String enddate; // 반납가능일
+	
+	private String delNo; // 선택박스 번호
 }

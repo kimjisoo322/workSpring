@@ -21,7 +21,8 @@ public interface BookService {
 	// 한 건 조회 
 	public Book getOne(int no, Model model);
 
-	public String insertKey(Book book, Model model, RedirectAttributes rttr);
+	public int insertKey(Book book);
+
 
 
 }

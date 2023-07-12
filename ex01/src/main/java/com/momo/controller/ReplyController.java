@@ -54,6 +54,7 @@ public class ReplyController {
 		Criteria criteria = new Criteria();
 		criteria.setPageNo(page);
 		
+		// tbl_reply 테이블의 목록 
 		List<ReplyVO> list = replyService.getList(bno, criteria);
 		int totalCnt = replyService.totalCnt(bno);
 		
@@ -78,15 +79,21 @@ public class ReplyController {
 	public Map<String, Object> insertReply(@RequestBody ReplyVO reply){
 		log.info(" ============= 댓글 ============= ");
 		log.info("replyVo" + reply);
-		int res = replyService.insertReply(reply);
 	
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		if(res>0) {
-			map.put("result", "success");
-		}else {
+		try {
+			int res = replyService.insertReply(reply);
+			if(res>0) {
+				map.put("result", "success");
+			}else {
+				map.put("result", "fail");
+				map.put("message", "등록 중 오류 발생!");
+			}
+			
+		}catch(Exception e) {
 			map.put("result", "fail");
-			map.put("message", "등록 중 오류 발생!");
+			map.put("message", "댓글 등록 중 오류 발생");
 		}
 		return map;
 	}
@@ -94,8 +101,11 @@ public class ReplyController {
 	// 댓글 삭제
 	@GetMapping("/reply/delete/{rno}")
 	public Map<String, Object> deleteReply(@PathVariable("rno") int rno) {
-		int res = replyService.deleteReply(rno);
 		Map<String, Object> map = new HashMap<String, Object>();
+
+		
+		int res = replyService.deleteReply(rno);
+		
 		if(res > 0) {
 			map.put("result", "success");
 		}else {
