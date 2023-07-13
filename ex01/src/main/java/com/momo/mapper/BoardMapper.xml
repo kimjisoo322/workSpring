@@ -17,13 +17,9 @@
 </select>
 
 
-<!-- 멤버 조회 -->
-<select id="getListMem" resultType ="com.momo.vo.Member">
-	select * from libmember
+<select id="getListMem" resultType="com.momo.vo.Member">
+	select id, name from libmember where id = #{id} 
 </select>
-
-
-
 <!--  동적 쿼리 작성 : ? 를   #{속성} 으로 사용해서 값을 받아옴
  			-> myBatis는 내부적으로 preparedStatement를 활용
  -->

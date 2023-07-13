@@ -27,7 +27,7 @@ import lombok.extern.log4j.Log4j;
  * */
 @Log4j
 @RestController
-public class ReplyController {
+public class ReplyController extends CommonRestController {
 	
 	@Autowired
 	ReplyService replyService;
@@ -48,7 +48,7 @@ public class ReplyController {
 	@GetMapping("/reply/list/{bno}/{page}")
 	public Map<String, Object> getList(@PathVariable("bno") int bno, @PathVariable("page") int page){
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		//Map<String, Object> map = new HashMap<String, Object>();
 		
 		// 페이징 처리 
 		Criteria criteria = new Criteria();
@@ -61,11 +61,7 @@ public class ReplyController {
 		// 페이지 블럭 생성
 		PageDto pageDto = new PageDto(criteria, totalCnt);
 		
-		map.put("list", list);
-		map.put("pageDto", pageDto);
-		map.put("criteria", criteria);
-		
-		return map;
+		return responseSelectMap(list, pageDto, criteria);
 	}
 	
 	// 댓글 등록
@@ -83,54 +79,49 @@ public class ReplyController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			int res = replyService.insertReply(reply);
-			if(res>0) {
-				map.put("result", "success");
-			}else {
-				map.put("result", "fail");
-				map.put("message", "등록 중 오류 발생!");
-			}
+				int res = replyService.insertReply(reply);
+				return map = responseWriteMap(res);
 			
 		}catch(Exception e) {
 			map.put("result", "fail");
 			map.put("message", "댓글 등록 중 오류 발생");
 		}
-		return map;
+		return responseWriteMap(replyService.insertReply(reply));
 	}
 	
 	// 댓글 삭제
 	@GetMapping("/reply/delete/{rno}")
 	public Map<String, Object> deleteReply(@PathVariable("rno") int rno) {
-		Map<String, Object> map = new HashMap<String, Object>();
-
+		/*
+		 * Map<String, Object> map = new HashMap<String, Object>();
+		 * 
+		 * 
+		 * int res = replyService.deleteReply(rno);
+		 * 
+		 * if(res > 0) { map.put("result", "success"); }else { map.put("result",
+		 * "fail"); map.put("message", "삭제 중 오류 발생!"); }
+		 */
 		
-		int res = replyService.deleteReply(rno);
+		// Map을 생성해서 결과값을 판단하는 메서드 responseMap
 		
-		if(res > 0) {
-			map.put("result", "success");
-		}else {
-			map.put("result", "fail");
-			map.put("message", "삭제 중 오류 발생!");
-		}
-		
-		return map;
+		return responseDeleteMap(replyService.deleteReply(rno));
 	}
 	
 	// 댓글 수정 
 	@PostMapping("/reply/update") 
 	 public Map<String, Object> updateReply(@RequestBody ReplyVO reply){
-		 Map<String, Object> map = new HashMap<String, Object>();
-		 
-		 int res = replyService.updateReply(reply);
-		 
-		 log.info("================댓글 수정=========" + res);
-		 if(res>0) {
-			 map.put("result", "success");
-		 }else {
-			 map.put("result", "fail");
-			 map.put("message", "수정 중 오류 발생!");
-		 }
-		 return map;
+		/*
+		 * Map<String, Object> map = new HashMap<String, Object>();
+		 * 
+		 * int res = replyService.updateReply(reply);
+		 * 
+		 * log.info("================댓글 수정=========" + res); if(res>0) {
+		 * map.put("result", "success"); }else { map.put("result", "fail");
+		 * map.put("message", "수정 중 오류 발생!"); }
+		 */	
+		return responseEditMap(replyService.updateReply(reply));
 	 }
 	
 }
+
+

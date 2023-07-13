@@ -14,13 +14,13 @@
 
 <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/navbar-fixed/">
 
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
 <!--  스타일 태그  -->
 <link href="/resources/css/style.css" rel="stylesheet" >
 
     <!-- Custom styles for this template -->
-    <link href="navbar-top-fixed.css" rel="stylesheet">
+   <!--  <link href="navbar-top-fixed.css" rel="stylesheet"> -->
     
  <script type="text/javascript">
 				  // url, bno 두개를 받음 
@@ -37,10 +37,11 @@
 <%@ include file="../common/Header.jsp" %>    
 
 <main class="container">
+    ${member.id} 님 환영합니다🎉
   <div class="bg-light p-5 rounded">
     <h2>🔅게시판🔅</h2>
     <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
-    <a class="btn btn-secondary w-30" href="../board/write" role="button">글쓰기</a>
+      <a class="btn btn-secondary w-30" href="../board/write" role="button">글쓰기</a>
   </div>
 
   <p></p>

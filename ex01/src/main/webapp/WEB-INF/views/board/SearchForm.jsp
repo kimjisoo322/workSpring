@@ -25,8 +25,10 @@
 <body>
 
 <form class="row g-3 justify-content-center" action="/board/list_boot" method = "get" name="searchForm">
+
 <input type ="text" name ="bno" value ="${board.bno }" hidden>  
-<input type ="text" name ="pageNo" value ="${criteria.pageNo }" hidden> 
+<input type ="text" name ="pageNo" value ="${criteria.pageNo }" hidden>
+ 
   <div class="col-sm-2">
     <select name = "searchField" class="form-select" aria-label="Default select example">
   <option value="title"${criteria.searchField eq "title" ? "selected" : ""}>제목</option>

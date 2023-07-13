@@ -29,6 +29,11 @@ public class BoardController {
 	BoardService boardService;
 
 	
+	@GetMapping("login")
+	public void login() {
+		
+	}
+	
 	@GetMapping("/reply/test")
 	public String test() {
 		
@@ -113,7 +118,16 @@ public class BoardController {
 	
 	@PostMapping("updateAction")
 	public String updateXML(BoardVO board, RedirectAttributes rttr, Model model, Criteria criteria) {
-
+		
+		// request.getParam("pageNo") 
+		// request.setAttribute("")
+		// addAttribute
+	//	=> 컨트롤러가 자동 수집해줌 (매개변수에 적어주면) => pageNo = 1 (쿼리스트링, get방식) = ${param.pageNo}
+	
+		// request.getAttribute('') 
+		// session.setAttribute 
+		// addFlashAttribute
+	//  => request 내장 객체에 저장 => ${pageNo}
 		
 		 BoardVO bd = boardService.getOne(board.getBno());
 		 
@@ -129,8 +143,14 @@ public class BoardController {
 		String message = "";
 		if (res > 0) {
 			message = res + "건 수정되었습니다.";
-			rttr.addFlashAttribute("message", message);
-			
+			/**
+			 * 	 [ 검색을 한 상태에서 수정하기를 했을 때, 수정이 완료되면 다시 그 페이지로 유지 하게 되는 것 ]  
+			 * */
+			rttr.addAttribute("pageNo", criteria.getPageNo());
+			rttr.addAttribute("searchField", criteria.getSearchField());
+			rttr.addAttribute("searchWorld", criteria.getSearchWorld());
+			rttr.addFlashAttribute("message", message); // ${message}
+		//	 rttr.addAttribute("message", message);					// ${param.message}
 			return "redirect:/board/list_boot";
 		} else {
 			message = "수정 중 오류가 발생하였습니다.";

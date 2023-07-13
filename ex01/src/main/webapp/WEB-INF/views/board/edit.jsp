@@ -21,35 +21,59 @@
 	function deletepost(bno){
 		location.href = "/board/deleteAction?bno=" + bno;
 	}
+	
+	function requestAction(url) {
+		editForm.action=url;
+		editForm.submit();
+	}
+
+</script>
+<script type="text/javascript">
+	// 수정 페이지 에서 목록 돌아가기 버튼을 클릭하면 list로 돌아감 ( 검색 조건을 유지하면서! )
+	window.addEventListener('load', function(){
+
+		//☆ 목록 페이지 이동
+		btnList.addEventListener('click', function(){
+			editForm.action='/board/list_boot';
+			/**
+				viewForm이 post의 경우 오류 발생! 
+			*/
+			editForm.method = "get";
+			editForm.submit();
+		});		
+	});
 </script>
 </head>
 <body>
 
-페이지번호 : ${param.pageNo} 
-${searchField }
-${searchWorld}
+<%-- 페이지번호 : ${param.pageNo} 
+${param.searchField }
+${param.searchWorld} --%>
 <%@ include file="../common/Header.jsp" %>    
 
 <!--${board}  -->
 
 <c:set  value="${board}" var="board"></c:set>
- <input type="text" name ='no' value ="${board.bno}" ></input>
- <input type="text" name = 'pageNo' value ="${criteria.pageNo}"></input>
+ <input type="hidden" name ='no' value ="${board.bno}" ></input>
+ <input type="hidden" name = 'pageNo' value ="${criteria.pageNo}"></input>
 
 <main class="container">
 
  <div class="bg-light p-5 rounded">
     <h2>수정하기✏</h2>
     <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
-    <a  class="btn btn-secondary w-30" href="../board/list_boot" role="button">목록으로 돌아가기</a>
+    <a  class="btn btn-secondary w-30" href="#"  id = "btnList" role="button">목록으로 돌아가기</a>
   </div>
 
-<form action="/board/updateAction?bno=${board.bno}" method="post" accept-charset="UTF-8" >
-<input type ="text" name= "pageNo" value=${param.pageNo }>
-<input type ="text" name= "searchField" value=${param.searchField }>
-<input type ="text" name= "searchWorld" value=${param.searchWorld }>
-
-   <input type="text" name="bno" value="${board.bno }">
+<form action="/board/updateAction?bno=${board.bno}" method="post" accept-charset="UTF-8"  name="editForm">
+	
+	<!--  파라메터  -->
+	<input type ="hidden" name= "pageNo" value=${param.pageNo }>
+	<input type ="hidden" name= "searchField" value=${param.searchField }>
+	<input type ="hidden" name= "searchWorld" value=${param.searchWorld }>
+   	<input type="hidden" name="bno" value="${board.bno }">
+	
+	
 	<div class="mb-3">
 	  <label for="title" class="form-label">📌제목</label>
 	  <input type="text" class="form-control"  id="title"  name ="title" value = "${board.title }"></input>
@@ -75,7 +99,7 @@ ${searchWorld}
 	</div>
 	
 	  <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-	  <button type="submit" class="btn btn-outline-primary">update</button>
+	  <button type="submit" class="btn btn-outline-primary" onclick="requestAction('/board/updateAction')">update</button>
 	  <button type="reset" class="btn btn-secondary">reset</button>
 	  </div>
 </form>

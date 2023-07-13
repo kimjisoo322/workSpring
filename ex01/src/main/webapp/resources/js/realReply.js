@@ -39,9 +39,20 @@ console.log("reply.js 연결 완★")
 	}
 
 	// 댓글 목록 함수 
-	function getReplyList(){
+	function getReplyList(page){
+		/**
+		 *    page에 아래와 같은 값들이 있다면 false 
+		 *	false : false, 0, "", NaN, undefined, null 
+		 *   -> falsey한 값 이외의 값이 들어있으면 true 반환
+		 * */
+		
+		// page에 입력된 값이 없으면 1을 세팅 
+		if(!page){
+			page = 1;
+		}
+		
 		let bno =document.querySelector('#bno').value;
-		let page = document.querySelector('#pageNo').value;
+
 		console.log("bno : " , bno);
 		console.log("page : ", page);
 		
@@ -108,31 +119,33 @@ console.log("reply.js 연결 완★")
 			let pageBlock =                                       
 			
 			`<nav aria-label="Page navigation example">`
-			 +	`<ul class="pagination justify-content-center">`;
+			 +	`<ul class="pagination justify-content-center">`
 	
 			
 			if(pageDto.prev){
-				pageBlock += ''
-					+ 	`<li class="page-item" onclick = "getPage(${pageDto.startNo-1})">`
+				pageBlock +=
+					 	`<li class="page-item" onclick = "getReplyList(${pageDto.startNo-1})">`
 					+ 		`<a class="page-link">Previous</a>`
 					+ 	`</li>`;
 			}
-			for(i= pageDto.startNo; i<= pageDto.endNo; i++){
+			for(let i= pageDto.startNo; i<= pageDto.endNo; i++){
+				let active = pageDto.criteria.pageNo == i? 'active' :'';
 				pageBlock += 
-						` <li class="page-item" onclick ="getPage(${i})">`
+						` <li class="page-item ${active}" onclick ="getReplyList(${i})">`
 					+		`<a class="page-link" href="#">${i}</a>`
 					+	`</li>`;
 			}
 			
 			if(pageDto.next){
 				 pageBlock +=
-					 `<li class="page-item" onclick="getPage(${pageDto.endNo+1})">`
+					 `<li class="page-item" onclick="getReplyList(${pageDto.endNo+1})">`
 				+ 		`<a class="page-link" href="#">Next</a>`
-				+	`</li>`
-				+  `</ul>`
-				+`</nav>`;
-				replyDiv.innerHTML  += pageBlock;
+				+	`</li>`;
 			}
+			pageBlock +=
+			 `</ul>`
+			+`</nav>`
+			replyDiv.innerHTML  += pageBlock;
 			
 			
 		}
@@ -204,9 +217,12 @@ console.log("reply.js 연결 완★")
 	// 결과 (등록, 삭제 => 성공이면 getList() 호출!)
 	function replyRes(map){
 		console.log(map);
+		
 		// 성공 : 리스트 조회 및 출력  
 		// 실패 : 메세지 출력 
 		if(map.result == 'success'){
+			/*console.log("메세지 : " , map.message);*/
+			alert(map.message);
 			// 등록 성공
 			getReplyList();
 		}else{

@@ -17,10 +17,7 @@
 
 
 <insert id = "insertReply">
-<selectKey keyProperty="rno" order="BEFORE" resultType="int">
-	select seq_reply.nextval from dual
-</selectKey>
-	insert into tbl_reply(rno, bno, reply, replyer, replyDate) values (#{rno}, #{bno}, #{reply}, #{replyer}, sysdate)
+	insert into tbl_reply(rno, bno, reply, replyer, replyDate) values (seq_reply.nextval, #{bno}, #{reply}, #{replyer}, sysdate)
 </insert>
 
 <!-- 총 건수 출력 = 게시글에 있는 댓글 수  -->

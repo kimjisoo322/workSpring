@@ -23,10 +23,23 @@
                     </div>
                 </div>
 			</div>
+					<!--  댓글 리스트  -->
+	<br>
+	<h3>cHaT📧</h3>
+	<div class="input-group">
+	  <span class="input-group-text">댓글</span>
+	  <!-- 수정★ -->
+	  <input type ="hidden" name= "pageReply" value="${param.pageNo }" id = "pageReply" >
+	  <input type="text" aria-label="First name" class="form-control" id = "replyer" value="작성자">
+	  <input type="text" aria-label="First name" class="form-control" id = "reply" placeholder="댓글을 입력해주세요" >
+	  <input type="button" id="btnReplyWrite"  value= "등록" aria-label="Last name" class="input-group-text">
+	</div>
+		<div id = "replyDiv">
+		
+		</div>
 		</div>
 	
-		<!--  댓글  -->
-		
+	
 		<!--  Footer -->
 	
 <%@include file="./Footer.jsp" %>

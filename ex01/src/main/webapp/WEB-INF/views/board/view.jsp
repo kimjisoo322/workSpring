@@ -17,7 +17,7 @@
 <link href="/resources/css/style.css" rel="stylesheet" >
 
 <!--  JS 댓글(스크립트)  -->
-<script src="/resources/js/reply.js"></script>
+<script src="/resources/js/realReply.js"></script>
 
 <title>상세보기</title>
 <script type="text/javascript">
@@ -77,10 +77,12 @@ ${searchWorld}
   </div> 
 
 <form method="get" name="viewForm" accept-charset="UTF-8" >
-	<input type ="text" name= "pageNo" value="${param.pageNo }" id = "pageNo" >
-	<input type ="text" name= "searchField" value="${param.searchField }" >
-	<input type ="text" name= "searchWorld" value="${param.searchWorld }" >
-   	<input type="text" name="bno" value="${board.bno}" id = "bno" >
+	
+	<!-- 파라메터 -->
+	<input type ="hidden" name= "pageNo" value="${param.pageNo }" id = "pageNo" >
+	<input type ="hidden" name= "searchField" value="${param.searchField }" >
+	<input type ="hidden" name= "searchWorld" value="${param.searchWorld }" >
+   	<input type="hidden" name="bno" value="${board.bno}" id = "bno" >
 	
 	<div class="mb-3">
 	  <label for="title" class="form-label">🌱제목</label>
@@ -114,16 +116,16 @@ ${searchWorld}
 
 <!--  댓글 리스트  -->
 <br>
+<h3>cHaT📧</h3>
 <div class="input-group">
-  <span class="input-group-text">댓글📧</span>
+  <span class="input-group-text">댓글</span>
   <!-- 수정★ -->
-  <input type ="text" name= "pageReply" value="${param.pageNo }" id = "pageReply" >
+  <input type ="hidden" name= "pageReply" value="${param.pageNo }" id = "pageReply" >
   <input type="text" aria-label="First name" class="form-control" id = "replyer" value="작성자">
   <input type="text" aria-label="First name" class="form-control" id = "reply" placeholder="댓글을 입력해주세요" >
   <input type="button" id="btnReplyWrite"  value= "등록" aria-label="Last name" class="input-group-text">
 </div>
 	<div id = "replyDiv">
-	
 	</div>
 </main>
 

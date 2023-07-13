@@ -51,6 +51,21 @@
 		
 	
 </script>
+	<!--  JS 댓글(스크립트)  -->
+	<script src="/resources/js/realReply.js"></script>
+	
+	<script type="text/javascript">
+		window.addEventListener('load', function(){
+		 
+		// 댓글 목록 출력 			
+		getReplyList();
+		 
+		
+		//☆ 답글 등록 버튼 (등록 버튼을 클릭하면 답글 등록 실행)
+		btnReplyWrite.addEventListener('click', function(){
+			replyWrite();
+		});
+	</script>
 <script type="text/javascript">
 	let msg = '${message}';
 	
