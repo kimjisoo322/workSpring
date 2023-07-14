@@ -40,4 +40,22 @@ public class MemberTest {
 		 */
 	}
 	
+	@Test
+	public void memSignUp() {
+		assertNotNull(memberMapper);
+
+		log.info("===========멤버등록=======");
+		Member member = new Member();
+		member.setId("JIMINEE");
+		member.setName("지미니");
+		member.setPw("1234");
+		
+		int res = memberMapper.memSignUp(member);
+		log.info(res);
+	}
+	/*
+	 * @Test public void idCheck() { assertNotNull(memberMapper); int res =
+	 * memberMapper.idCheck("JIMIN"); log.info(res); }
+	 */
+	
 }

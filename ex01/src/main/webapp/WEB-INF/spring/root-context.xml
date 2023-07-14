@@ -36,7 +36,11 @@
 	    <property name="uploadTempDir" value ="file:/C:/upload/tmp"></property>
 	    <property name="maxInMemorySize" value="10485756"></property>
 	</bean>
-
+	
+	<!-- 암호화 Encode (com.momo.member > EncodeTest)   -->
+	<bean id="bcrpytPassWordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	</bean>
+	
 	<mybatis-spring:scan base-package="com.momo.mapper"/>
 	
 	

@@ -206,7 +206,17 @@
 		    <version>1.5</version>
 		</dependency>
 		      
-
+		
+		<!--  암호화 (비밀번호 )  -->
+		      <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+	<dependency>
+   		<groupId>org.springframework.security</groupId>
+    	<artifactId>spring-security-core</artifactId>
+    	<version>5.0.7.RELEASE</version>
+	</dependency>
+		      
+		      
+		      
 		      
 	</dependencies>
     <build>

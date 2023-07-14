@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,12 +56,22 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
+        
+        
+        <!--  아이디가 비어있으면 LOGIN, 비어있지 않으면 LOGOUT -->
+        <c:if test="${empty userId}" var = "res">
+        
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="/login">Login</a>
         </li>
+		</c:if>
+        
+        <c:if test="${not res}">
         <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
-        </li>
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>        
+        </c:if>
+        
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

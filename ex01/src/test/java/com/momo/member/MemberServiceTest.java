@@ -1,5 +1,7 @@
 package com.momo.member;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.util.List;
 
 import org.junit.runner.RunWith;
@@ -28,7 +30,22 @@ public class MemberServiceTest {
 		member.setPw("1234");
 		Member list = memberService.memLogin(member);
 		
-	
 	}
 
-}
+	/*
+	 * @org.junit.Test public void signUp() { System.out.println("=====회원가입=====");
+	 * Member member = new Member(); member.setId("JK"); member.setName("전정국");
+	 * member.setPw("1234"); int res = memberService.memSignUp(member);
+	 * log.info(res); }
+	 */
+	
+	@org.junit.Test
+	public void idCheckTest() {
+		Member member = new Member();
+		member.setId("JIMIN");
+		System.out.println("====아이디중복체크");
+		
+		int res = memberService.idCheck(member);
+		log.info(res);
+	}
+}	

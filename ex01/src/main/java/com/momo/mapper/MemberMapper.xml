@@ -6,11 +6,17 @@
 <mapper namespace="com.momo.mapper.MemberMapper">
 
 <select id="memLogin" resultType="com.momo.vo.Member">
-	select * from libmember where id = #{id} and pw = #{pw}
+	select * from libmember where id = #{id}
 </select>
 
+<insert id="memSignUp" >
+	insert into libmember (id, name, pw) values (#{id}, #{name}, #{pw})
+</insert>
 
+<!--  아이디 중복 체크
+		 (아이디의 count(*) =1 있으면  0 반환,  count(*)=0 없으면 1 반환)  -->
+<select id="idCheck" resultType="int">
+	select count(*) from libmember where id = #{id}
+</select>	
 
-
-	
 </mapper>
