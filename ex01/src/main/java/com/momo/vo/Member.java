@@ -1,6 +1,7 @@
 package com.momo.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,6 +26,8 @@ public class Member {
 	private String status;
 	private String grade;
 	private String adminyn;
+	
+	private List<String> role; // 사용자 권한을 조회해서 role에 넣어줌
 	
 	/*
 	 * @DateTimeFormat(pattern = "yyyy/MM/dd") private Date dueDate;

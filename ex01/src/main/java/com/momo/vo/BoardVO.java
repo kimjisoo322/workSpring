@@ -10,5 +10,6 @@ public class BoardVO {
 	private String writer;
 	private String regdate;
 	private String updatedate;
+	private String replycnt; // 댓글 수 증가
 
 }

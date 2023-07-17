@@ -116,7 +116,8 @@ ${searchWorld}
 
 <!--  댓글 리스트  -->
 <br>
-<h3>cHaT📧</h3>
+<h3>cHaT📧  </h3>
+
 <div class="input-group">
   <span class="input-group-text">댓글</span>
   <!-- 수정★ -->

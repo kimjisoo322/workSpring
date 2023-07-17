@@ -4,11 +4,16 @@ import java.util.Arrays;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
+
+import com.momo.service.logService;
+import com.momo.vo.logVo;
 
 import lombok.extern.log4j.Log4j;
 
@@ -54,26 +59,52 @@ public class LogAdvice {
 	 * 			 주업무로직을 실행하기 위해 JoinPoint의 하위클래스인 ProceedingJoinPoint타입의 파라메터를 ★필수적★으로 선언! 
 	 * */
 	// 시간 구하기 
-	@Around("execution(* com.momo.service.Board*.*(..))")
-	public Object logTime(ProceedingJoinPoint pjp) {
-		StopWatch stopWatch = new StopWatch();
-		stopWatch.start();
-		
-		Object res = "";
-		try {
-			// 주 업무로직 실행 
-			res = pjp.proceed();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		
-		stopWatch.stop();
-		log.info("★ target : " + pjp.getTarget() + "." + pjp.getSignature().getName());
-		log.info("★ 수행시간 : " + stopWatch.getTotalTimeMillis() + "(ms)초");
-		log.info("==== 전체 ====" + pjp.getTarget() + "." + pjp.getSignature().getName()+ "★ 수행시간 : " + stopWatch.getTotalTimeMillis() + "(ms)초" );
-		return res;
-	}
+
+	/*
+	 * @Around("execution(* com.momo.service.Board*.*(..))") public Object
+	 * logTime(ProceedingJoinPoint pjp) { StopWatch stopWatch = new StopWatch();
+	 * stopWatch.start();
+	 * 
+	 * Object res = ""; try { // 주 업무로직 실행 res = pjp.proceed(); } catch (Throwable
+	 * e) { e.printStackTrace(); }
+	 * 
+	 * stopWatch.stop(); log.info("★ target : " + pjp.getTarget() + "." +
+	 * pjp.getSignature().getName()); log.info("★ 수행시간 : " +
+	 * stopWatch.getTotalTimeMillis() + "(ms)초"); log.info("==== 전체 ====" +
+	 * pjp.getTarget() + "." + pjp.getSignature().getName()+ "★ 수행시간 : " +
+	 * stopWatch.getTotalTimeMillis() + "(ms)초" ); return res; }
+	 */
 	
+	@Autowired
+	logService logservice;
+ 	
+	/**
+	 * 	AfterThrowing 
+	 *  : 타겟 메서드 실행 중 예외가 발생한 뒤에 실행할 부가기능
+	 *    오류가 발생내역을 테이블에 등록 
+	 * */
+	
+	 @AfterThrowing(pointcut = "execution(* com.momo.service.*.*(..))", throwing= "exception")
+	public void logException(JoinPoint joinPoint, Exception exception) {
+		 log.info("=====@AfterThrowing" );
+		// 예외가 발생 시 예외 내용을 테이블에 저장함
+		try {
+			logVo logvo = new logVo();
+			logvo.setClassname( joinPoint.getTarget().getClass().getName());
+			logvo.setMethodname(joinPoint.getSignature().getName());
+			logvo.setParams(Arrays.toString(joinPoint.getArgs()));
+			logvo.setErrmsg(exception.getMessage());
+			
+			logservice.logInsert(logvo);
+			
+
+			log.info(" === 로그 테이블에 저 장☆ === " );
+			
+		} catch (Exception e) {
+			log.info("log테이블 저장 중 예외발생!!");
+			log.info(e.getMessage());
+		}
+	}
 }
 
 

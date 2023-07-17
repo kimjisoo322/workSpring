@@ -5,8 +5,8 @@
   <!--  인터페이스의 풀경로  -->
 <mapper namespace="com.momo.mapper.logMapper">
 
-<insert id="logInsert">
-	insert into tbl_log values ('','','','', sysdate)
+<insert id="logInsert" >
+	insert into tbl_log values (#{classname},#{methodname},#{params},#{errmsg}, sysdate)
 </insert>
 
 

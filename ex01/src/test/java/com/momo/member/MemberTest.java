@@ -2,6 +2,7 @@ package com.momo.member;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,5 +58,13 @@ public class MemberTest {
 	 * @Test public void idCheck() { assertNotNull(memberMapper); int res =
 	 * memberMapper.idCheck("JIMIN"); log.info(res); }
 	 */
+	
+	@Test
+	public void getMemberRole() {
+		List<String> list = memberMapper.getMemberRole("ADMIN");
+										// list 안에 ADMIN_ROLE 이 있는지 확인 true/false 반환
+		System.out.println(" 관리자 권한 조회 : " + list.contains("ADMIN_ROLE"));
+	
+	}
 	
 }

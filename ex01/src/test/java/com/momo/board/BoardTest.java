@@ -113,6 +113,12 @@ public class BoardTest {
 		log.info(res);
 	}
 	
+	// 게시물 수 증가 테스트 
+	@Test
+	public void updateReplyCnt() {
+		int res = boardMapper.updateReplyCnt(74, 1);
+		assertEquals(1, res);
+	}
 }
 
 

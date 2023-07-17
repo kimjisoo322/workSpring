@@ -113,6 +113,8 @@
 <script src="/resources/js/common.js"></script>   
 <script type="text/javascript">
 
+// ✨✨✨✨      fetch 되는 경로는 MemberController 에서 ✨✨✨✨
+
 	window.addEventListener('load', function(){
 		btnLogin.addEventListener('click', function(e){
 			// 기본이벤트 재거
@@ -257,7 +259,10 @@
 		// 로그인 성공 -> list 로 이동
 		// 실패 -> 메세지 처리
 		if(map.result == 'success'){
-			location.href="/board/list_boot"
+				// 로그인 체크해서 성공했을 때 아래의 경로를 실행 
+				//  memberController에서 map에 관리자와 사용자에 따른 페이지 경로를 구분해놓음! 
+				//  map.put("url", "/admin/main"); > url로 지정했기 때문에 map.url로 부를 수 있다.
+			location.href=map.url;
 		} else {
 			message.innerHTML = map.message;
 		}

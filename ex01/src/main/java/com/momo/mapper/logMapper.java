@@ -1,5 +1,9 @@
 package com.momo.mapper;
 
-public interface logMapper {
+import com.momo.vo.logVo;
 
+public interface logMapper {
+	
+	public int logInsert(logVo logvo);
+	
 }

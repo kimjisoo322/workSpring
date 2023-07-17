@@ -2,6 +2,7 @@ package com.momo.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.momo.vo.BoardVO;
@@ -37,7 +38,12 @@ public interface BoardMapper {
 	public int getTotalCnt();
 
 	public int getTotalCnt(Criteria criteria);
-
+	
+	// 댓글 수 증가 (트랜잭션 처리)
+	/**
+	 * 	파라메터가 2개 이상인 경우 param 어노테이션 달아주기! 
+	 * */
+	public int updateReplyCnt(@Param("bno")int bno, @Param("amount")int amount);
 	
 	
 }	

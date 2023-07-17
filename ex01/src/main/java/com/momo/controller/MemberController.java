@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.momo.service.MemberService;
 import com.momo.vo.Member;
 
+import jdk.internal.org.jline.utils.Log;
+
 @Controller
 public class MemberController extends CommonRestController {
 
@@ -43,8 +45,17 @@ public class MemberController extends CommonRestController {
 			// member 객체를 session에 저장 => ${member}로 부르기 
 			session.setAttribute("member", member);
 			session.setAttribute("userId", member.getId());
-				// res 가 1이면 로그인 , 0이면 else
-			return responseMap(REST_SUCCESS, "로그인 성공🎉");
+
+			Map<String, Object> map = responseMap(REST_SUCCESS, "로그인 되었습니다.");
+
+			if(member.getRole() != null && member.getRole().contains("ADMIN_ROLE")) {
+				// 관리자가 로그인하면 -> 관리자 페이지로 이동/ 사용자가 로그인하면 -> 사용자 페이지로 이동 
+				map.put("url", "/admin/main");
+			}else {
+				map.put("url", "/board/list_boot");
+			}
+			return map;
+			//return responseMap(REST_SUCCESS, "로그인 성공🎉");
 		}else {
 			return responseMap(REST_FAIL, "아이디와 비밀번호가 일치하지 않습니다");
 		}

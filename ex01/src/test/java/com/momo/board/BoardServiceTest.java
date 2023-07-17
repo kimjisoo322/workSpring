@@ -1,7 +1,10 @@
 package com.momo.board;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +57,13 @@ public class BoardServiceTest {
 		System.out.println("==========게시물 삭제========");
 		
 		log.info(res);
+	}
+	
+	// 댓글 수 증가 테스트 
+	@Test
+	public void  updateReplyCnt() {
+		int res = boardService.updateReplyCnt(62, 1);
+		assertEquals(1, res);
 	}
 	
 	

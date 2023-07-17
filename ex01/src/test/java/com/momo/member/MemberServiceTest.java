@@ -32,12 +32,17 @@ public class MemberServiceTest {
 		
 	}
 
-	/*
-	 * @org.junit.Test public void signUp() { System.out.println("=====회원가입=====");
-	 * Member member = new Member(); member.setId("JK"); member.setName("전정국");
-	 * member.setPw("1234"); int res = memberService.memSignUp(member);
-	 * log.info(res); }
-	 */
+	 @org.junit.Test 
+	 public void signUp() { 
+		 System.out.println("=====회원가입=====");
+	 Member member = new Member(); 
+	 member.setId("ADMIN"); 
+	 member.setName("관리자");
+	 member.setPw("1234"); 
+	 int res = memberService.memSignUp(member);
+	 log.info(res); 
+	 }
+	 
 	
 	@org.junit.Test
 	public void idCheckTest() {
@@ -48,4 +53,5 @@ public class MemberServiceTest {
 		int res = memberService.idCheck(member);
 		log.info(res);
 	}
+	
 }	

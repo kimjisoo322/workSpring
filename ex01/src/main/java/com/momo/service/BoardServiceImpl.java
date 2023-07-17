@@ -100,4 +100,10 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 
+	@Override
+	public int updateReplyCnt(int bno, int amount) {
+		return boardMapper.updateReplyCnt(bno, amount);
+	}
+
+
 }

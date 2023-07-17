@@ -78,6 +78,11 @@
 	</choose>
 </sql>
 
+<!--  댓글 수 증가  -->
+<!--  게시물 테이블에 있는 reply 건수를 올려주거나 내려주는 역할  -->
+<update id="updateReplyCnt">
+	update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
+</update>
 </mapper>
 
 
