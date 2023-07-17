@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,7 +62,18 @@ public class BoardController {
 	 * */
 	@GetMapping("list_boot")
 	public void list_boot(Model model, Criteria criteria) {
+		
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		
 		boardService.getListXML(criteria, model);
+		
+		log.info("=================list");
+		log.info("cri : " + criteria);
+		
+		stopWatch.stop();
+		log.info(" 수행시간 : " + stopWatch.getTotalTimeMillis()+ "(ms)초");
+		
 		//model.addAttribute("list",boardService.getListXML(criteria, model); );
 	}
 
