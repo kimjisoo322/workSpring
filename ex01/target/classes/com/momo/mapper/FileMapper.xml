@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!--  인터페이스의 풀경로  -->
+<mapper namespace="com.momo.mapper.FileMapper">
+	
+	<select id="fileSelect" resultType="com.momo.vo.FileVO">
+		select t.*
+		, uploadpath||uuid||'_'||filename savePath 
+		, decode(fileType, 'I',  's_'||uploadpath||uuid||'_'||filename, ' ') s_savePath
+		 from tbl_attach t 
+		 where bno = #{bno}
+	</select>
+<!--  decode : fileType이 I면 썸네일 경로를 찍어서 s_savePath로 저장, F면 공백 출력 -->
+	<insert id="fileInsert">
+		insert into tbl_attach values (#{uuid},#{uploadpath},#{filename}, #{filetype},#{bno})
+	</insert>
+</mapper>

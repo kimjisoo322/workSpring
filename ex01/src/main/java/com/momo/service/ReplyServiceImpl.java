@@ -29,6 +29,7 @@ public class ReplyServiceImpl implements ReplyService{
 	
 	// 게시물 테이블에 있는 reply 건수를 올려주거나 내려주는 역할을 위해서 
 	// 댓글이 등록되거나 삭제될 때 사용 
+	 // aop (전처리 후처리 작업 해줌)
 	@Transactional
 	@Override
 	public int insertReply(ReplyVO reply) {

@@ -33,6 +33,10 @@ public class CommonRestException {
 	@ExceptionHandler(Exception.class)
 	public Map<String, Object> except(Exception ex, Model model) {
 		System.out.println("Exception ...." + ex.getMessage());
+		
+		// 어디에서 오류가 생겼는지 알려줌
+		ex.printStackTrace();
+		
 		// 로그 로 메세지 남기기 
 		log.info(" ★ RestException....!");
 		log.debug("로그테스트 = debug");

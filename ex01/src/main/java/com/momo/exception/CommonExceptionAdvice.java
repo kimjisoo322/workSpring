@@ -32,6 +32,9 @@ public class CommonExceptionAdvice {
 	public String except(Exception ex, Model model) {
 		System.out.println("Exception ...." + ex.getMessage());
 		
+		// 어디에서 오류가 생겼는지 정보 출력
+		ex.printStackTrace();
+		
 		// 로그 로 메세지 남기기 
 		log.info("Exception....!");
 		

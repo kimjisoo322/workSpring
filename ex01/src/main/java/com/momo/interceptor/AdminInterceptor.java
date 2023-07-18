@@ -15,6 +15,11 @@ import com.momo.vo.Member;
  * 권한 체크 
  *  ( 로그인한 사용자의 권한을 체크해서 ADMIN_ROLE 권한이 포함되어 있으면 관리자 ) 
  * */
+/**
+ * 	preHandle : 컨트롤러 실행 전에 실행 
+ *  return : true : 요청 컨트롤러 실행 
+ *  		 false: 요청 컨트롤러 실행하지 않음 
+ * */
 // servlet-context에서 bean을 생성했기 때문에 interceptor가 실행될 수 있는 것 
 
 @Component

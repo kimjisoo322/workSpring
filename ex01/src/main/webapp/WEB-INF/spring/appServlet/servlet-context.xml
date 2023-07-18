@@ -37,7 +37,7 @@
 			<beans:ref bean="loginInterceptor"></beans:ref>
 		</interceptor>
 	
-			<!--  관리자  체크  -->
+			<!--  관리자  체크  : ** 나의 하위 경로 포함  -->
 			<interceptor>
 				<mapping path="/admin**"/>
 				<beans:ref bean ="adminInterceptor"/>

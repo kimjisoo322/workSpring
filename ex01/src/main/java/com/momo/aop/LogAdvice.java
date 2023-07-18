@@ -28,6 +28,33 @@ import lombok.extern.log4j.Log4j;
  * 
  *  부가적인 관심사 : 로깅, 보안, 트랜잭션관리 등 
  *   애플리케이션에서 공통적으로 처리해야 하는 기능
+ *  * AOP(Aspect-Oriented Programming) 
+ * 		관점지향프로그래밍
+ * 		핵심비지니스 로직과 부가적인 관심사를 분리 하여 개발하는 방법론
+ * 
+ * 		코드의 중복을 줄이고 유지보수성을 향상 시킬수 있습니다.
+ * 
+ * 부가적인 관심사
+ * 		로깅, 보안, 트랜젝션관리등 
+ * 		애플리케이션에서 공통적으로 처리해야 하는 기능
+ *		
+ * Aspect
+ * 		부가적인 관심사를 모듈화한 단위
+ * 		(Advice를 그룹화)Cross Concern : 횡단관심사
+ * 		주 업무로직 이외의 부가적인 기능을 의미
+ * 
+ * Advice
+ * 		부가적인 관심사
+ *  
+ * Pointcut
+ * 		부가기능이 적용되는 지점
+ * 
+ * Target
+ * 		핵심 기능을 구현한 객체
+ * 		(Core Concern: 핵심관심사)
+ * 
+ * Proxy
+ * 		Target + Advice
  * 
  * */
 public class LogAdvice {
@@ -55,8 +82,11 @@ public class LogAdvice {
 		log.info("Method :" + joinPoint.getSignature().getName());
 	}
 	/**
-	 * 	Around : 타켓의 메소드가 호출되기 이전 시점과 이후 시점에 모두 처리해야 할 필요가 있는 부가 기능 정의 
+	 * 	Around : (타켓을 감싸고 실행)  
+	 * 			타켓의 메소드가 호출되기 이전 시점과 이후 시점에 모두 처리해야 할 필요가 있는 부가 기능 정의 
 	 * 			 주업무로직을 실행하기 위해 JoinPoint의 하위클래스인 ProceedingJoinPoint타입의 파라메터를 ★필수적★으로 선언! 
+	 *          
+	 * 		=> 타켓을 직접 실행하기 때문에 ProceedingJoinPoint 파라메터가 실행하고 결과를 반환해줌! 써주지 않으면 오류 발생 
 	 * */
 	// 시간 구하기 
 
@@ -82,6 +112,15 @@ public class LogAdvice {
 	 * 	AfterThrowing 
 	 *  : 타겟 메서드 실행 중 예외가 발생한 뒤에 실행할 부가기능
 	 *    오류가 발생내역을 테이블에 등록 
+	 * */
+	
+	/**
+	 * 	pointcut 표현식 execution(* member.model.service..*Service.*(..))
+	 *    * 			       	메소드의 리턴타입
+	 *    member.model.service  패키지 경로
+	 *    *Service 		       	클래스 명  (Service로 끝나는 모든 클래스)
+	 *    * 			       	메소드 명 
+	 *    (..) 			       	매개변수
 	 * */
 	
 	 @AfterThrowing(pointcut = "execution(* com.momo.service.*.*(..))", throwing= "exception")
