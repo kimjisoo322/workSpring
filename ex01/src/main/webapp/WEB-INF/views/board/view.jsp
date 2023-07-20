@@ -19,6 +19,7 @@
 <!--  JS 댓글(스크립트)  -->
 <script src="/resources/js/realReply.js"></script>
 
+<!--  파일 등록하는 스크립트  -->
 <title>상세보기</title>
 <script type="text/javascript">
 
@@ -98,6 +99,10 @@ ${searchWorld}
 	  <input type="text" class="form-control" id="writer" name ="writer" value = "${board.writer }" readonly></input>
 	</div>
 	
+	<!-- 	<div class="mb-3">
+	  <label for="files" class="form-label">🌱이미지</label>
+	  <input type="text" class="form-control" id="files" name ="files" value = "" readonly></input>
+	</div> -->
 		<div class="mb-3">
 	  <label for="regdate" class="form-label">🌱등록일</label>
 	  <input type="text" class="form-control" id="regdate"  name ="regdate" value = "${board.regdate }" readonly></input>

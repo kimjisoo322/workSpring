@@ -63,6 +63,7 @@ public class CommonRestController {
 		Map<String, Object> map = new HashMap<String, Object>();
 	
 			map.put("result", result);
+			System.out.println("common : " + result);
 			map.put("message", message);
 			
 		

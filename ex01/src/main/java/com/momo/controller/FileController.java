@@ -1,7 +1,9 @@
 package com.momo.controller;
 
+import java.awt.PageAttributes.MediaType;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,9 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.ibatis.annotations.Param;
+import javax.print.attribute.standard.Media;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -186,5 +193,60 @@ public class FileController extends CommonRestController{
 		}
 		return insertRes;
 	}
-}
-
+	@GetMapping("/file/delete/{bno}/{uuid}")
+	public @ResponseBody Map<String, Object> delete (@PathVariable("bno")int bno, @PathVariable("uuid")String uuid){
+		
+		int res = fileservice.fileDelete(bno, uuid);
+		
+		log.info( "파일 삭제 건수 : " + res );
+		if(res > 0) {
+			log.info("들어왔나요..? " +res );
+			return responseDeleteMap(res);
+			
+		}else {
+			return responseDeleteMap(res);
+		}
+	}
+	// 파일 다운로드 
+	/**
+	 *  컨텐츠 타입을 다운로드 받을 수 있는 형식으로 지정하여 
+	 *  브라우저에서 파일을 다운로드 할 수 있게 처리
+	 *   ( 파일 요청 할 때 파일 이름을 매개변수로 넣어줌 )
+	 *   * HttpStatus : 응답결과를 코드로 전달
+	 * */
+	@GetMapping("/file/download")	
+	public ResponseEntity<byte[]> download(String fileName){
+		log.info("download File : " + fileName);
+		
+		// HttpHeaders 는 org.springframework로 import! 
+		HttpHeaders headers = new HttpHeaders();
+		File file = new File(ATTACHES_DIR + fileName);
+		
+		if(file.exists()) {
+			// 컨텐츠 타입을 지정   
+			// APPLICATION_OCTET_STREAM : 이진 파일의 콘텐츠 유형 
+			headers.add("contentType", org.springframework.http.MediaType.APPLICATION_OCTET_STREAM.toString());;
+			
+			// 컨텐츠에 대한 추가 설명 및 파일 이름 한글 처리
+			try {
+				headers.add("Content-Disposition", "attachment; filename=\""
+				+ new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\"");
+				
+				return new ResponseEntity<>(
+						// 파일 , 헤더 , 결과 코드 
+						FileCopyUtils.copyToByteArray(file)
+						, headers
+						, HttpStatus.OK
+						);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {		
+		return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+}	

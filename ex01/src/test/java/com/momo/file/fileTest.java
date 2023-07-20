@@ -51,4 +51,11 @@ public class fileTest {
 			log.info(file);
 		});
 	}
+	@Test
+	public void deleteTest() {
+		int res =  filemapper.fileDelete(85, "51459de4-cf8d-460a-816a-124a71cc9685");
+		log.info("파일삭제");
+		log.info(res);
+		
+	}
 }

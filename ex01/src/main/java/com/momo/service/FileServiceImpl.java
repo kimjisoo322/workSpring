@@ -23,6 +23,11 @@ public class FileServiceImpl implements FileService{
 	public List<FileVO> fileSelect(int bno) {
 		return filemapper.fileSelect(bno);
 	}
+
+	@Override
+	public int fileDelete(int bno, String uuid) {
+		return filemapper.fileDelete(bno, uuid);
+	}
 	
 	
 }

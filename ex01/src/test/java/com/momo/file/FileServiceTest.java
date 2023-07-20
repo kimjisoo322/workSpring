@@ -49,4 +49,11 @@ public class FileServiceTest {
 			log.info(file);
 		});
 	}
+	@Test
+	public void deleteTest() {
+		int res =  fileservice.fileDelete(85, "397ac725-16d8-4a7b-978e-56c05090a9db");
+		log.info("파일삭제");
+		log.info(res);
+		
+	}
 }

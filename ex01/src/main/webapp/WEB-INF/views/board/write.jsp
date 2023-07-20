@@ -44,7 +44,7 @@
   </div>
 
  <div class="list-group w-auto">
-<form action="/board/writeAction" method="post" accept-charset="UTF-8" name = "writeForm" >
+<form action="/board/writeAction" method="post" accept-charset="UTF-8" name = "writeForm" enctype="multipart/form-data">
 
 	<div class="mb-3">
 	  <label for="title" class="form-label">🌱제목</label>
@@ -60,6 +60,12 @@
 	  <input type="text" class="form-control" id="writer" name ="writer"  >
 	</div>
 	
+	<!--  파일 첨부  -->
+		<div class="mb-3">
+	  <label for="files" class="form-label">🌱파일</label>
+	  <input type="file" class="form-control" id="files" name ="files"  >
+	</div>
+	
 	  <div class="d-grid gap-2 d-md-flex justify-content-md-center">
 	<!-- bno가 있으면 수정하기 버튼을 보여주고 아니면 글쓰기  -->
 	
@@ -68,6 +74,7 @@
 			<button type="submit" class="btn btn-success" onclick="requestAction('/board/updateAction')">update</button>
 	  </c:if>
 	  <c:if test="${not res}">
+	  <!--  등록은 submit -->
 	  	<button type="submit" class="btn btn-warning">input</button>
 	  </c:if>
 	 <button type="reset" class="btn btn-secondary">reset</button>

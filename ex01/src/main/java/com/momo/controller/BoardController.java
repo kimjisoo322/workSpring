@@ -1,8 +1,6 @@
 package com.momo.controller;
-
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +9,11 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.momo.service.BoardService;
+import com.momo.service.FileService;
 import com.momo.vo.BoardVO;
 import com.momo.vo.Criteria;
 
@@ -24,11 +24,13 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Controller
 @RequestMapping("/board/*")
-public class BoardController {
+public class BoardController extends FileController {
 
 	@Autowired
 	BoardService boardService;
-
+	
+	@Autowired
+	FileService fileservice;
 	
 	@GetMapping("login")
 	public void login() {
@@ -96,10 +98,16 @@ public class BoardController {
 	// void => /board/write
 	// return "write"; => web-inf/views/write.jsp
 	@PostMapping("writeAction")
-	public String writeAction(BoardVO board, Model model, RedirectAttributes rttr) {
+	public String writeAction(BoardVO board, Model model, RedirectAttributes rttr, ArrayList<MultipartFile> files) {
+	
+	
 		// board에 bno가 저장되어있음 (insertSelectKey) = 파라메터로 넘길 때 주소값을 가지고 있음
 		int res = boardService.insertSelectKey(board);
-
+		
+		fileupload(files,board.getBno());
+		
+/**	 파일첨부
+ * */
 		// redirect를 하게 되면 message가 유지가 안됨 (값을 가져가지 않음) -> redirect 하면서 값을 가져가고 싶을 때
 		// RedirectAttributes (영역을 가져감)
 		String message = "";
@@ -115,6 +123,7 @@ public class BoardController {
 			return "/board/message";
 		}
 	}
+
 	/*
 	 * 	수정하기 
 	 *     - bno를 파라메터로 받아야 함 

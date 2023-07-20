@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>파일 업로드</title>
 <script type="text/javascript">
+
 	
 	// 파일 조회 버튼 클릭시, getFileList() 함수 호출 
 	window.addEventListener('load', function(){
@@ -81,6 +82,10 @@
 	function fileuploadRes(map){
 		if(map.result == 'success'){
 			divFileuploadRes.innerHTML = map.message;
+			// 파일 첨부가 성공이면 게시글 등록 
+		}else{
+			// 파일 첨부가 실패하면 메세지 띄우기 
+			alert("첨부파일 업로드 중 오류 발생");
 		}
 	}
 	
@@ -94,13 +99,57 @@
 		.then(map => viewFileList(map));
 	}
 	
+	// 파일 삭제 콜백 함수  ( data 속성을 값을 가져오는 것 )
+    function attachFileDelete(e){
+	
+		(e.dataset.aaa)?'true':'false';
+		console.log(e.dataset.bno, e.dataset.uuid, e.dataset.aaa);
+		console.log(e);
+	
+		let bno = e.dataset.bno;
+		let uuid = e.dataset.uuid;
+
+		console.log( "bno:",bno);
+		console.log("uuid:",uuid);
+
+		//fetch(`/file/delete/\${bno}/\${uuid}`)
+		fetch('/file/delete/'+ bno +'/'+uuid)
+		.then(response => response.json())
+		.then(map =>delRes(map));
+	}
+	
+	
+	// 파일 삭제 결과 처리 함수
+	function delRes(map){
+		if(map.result == 'REST_SUCCESS'){
+			console.log(map.message);
+			
+			// 삭제 성공
+			divFiledelete.innerHTML = map.message;
+			getFileList();
+		}else{
+			//console.log("result " , map.result);
+			// 삭제 실패			
+			alert("삭제 중 오류발생");
+		}
+	}
+	
 	function viewFileList(map){
 		console.log("map : ", map);
 		let content = '';
 		
 		if(map.list.length > 0){
 		map.list.forEach(function(item, index){
-			content += item.filename + '<br>' ;
+			// URL 인코딩 
+			let savePath = encodeURIComponent(item.savePath);
+			
+			console.log("item.savePath" , item.savePath);
+			content += "<a href ='/file/download?fileName="
+					+ savePath+"'>" 
+				+ item.filename 
+				+ '</a>'
+			+ '<i class="fa-solid fa-square-xmark" data-bno="'+item.bno+'"data-uuid="'+item.uuid+'" onclick="attachFileDelete(this)"></i>' 
+			+ '<br>' ;
 			});
 		}else{
 			content = '등록된 파일이 없습니다.';
@@ -108,6 +157,7 @@
 		divFileupload.innerHTML = content;
 	}
 </script>
+<script src="https://kit.fontawesome.com/59843f4445.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <h3>파일 업로드</h3>
@@ -120,7 +170,9 @@
 		<input type="file" name="files" multiple="multiple"> <br>
 		<input type="file" name="files"> <br>
 		<input type="file" name="files"> <br><br>
+		<!--  파일만 등록하고자 할 때 -->
 		<button type="submit">파일업로드</button>
+		<!--  다른 페이지에 붙일 때 -->
 		<button type="button" id="btnFileupload">Fetch파일업로드</button>
 
 		<!--  rttr.addAttribute("message", message); -> ✔️  ${param.message} (쿼리스트링)-->
@@ -134,6 +186,6 @@
 <h3> 파일 리스트 조회 </h3>
 	 <button type="submit" id="btnList" onclick="getFileList()">파일조회</button>
 	 <div id="divFileupload"></div>
-	 
+	 <div id="divFiledelete"></div>
 </body>
 </html>
