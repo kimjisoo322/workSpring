@@ -98,14 +98,20 @@ console.log("reply.js 연결 완★")
 				replyDivStr +=
 					' <tr id="tr'+reply.rno+'" data-value= "'+reply.reply+'">'
 				+  ' <th scope="row">'+reply.rno+'</th>' 
-				+  ' 	<td class = "text-start fst-italic">'+reply.reply
-				+ ' '
-				+ 		'<i class="fa-solid fa-delete-left" onclick="replyDelete('+reply.rno+')"></i>'
-				+ ' '
-				+ 		'<i class="fa-solid fa-pencil" onclick="replyUpdate('+reply.rno+')"></i></td>'   
-				+   	'<td class = "fst-italic">'+reply.replyer+' <br>' +reply.replyDate+' </td>'  
-				+   '</tr>';
-			
+				+  ' 	<td class = "text-start fst-italic">'+reply.reply;
+				
+				// replyer.value : 로그인한 아이디 
+				// reply.replyer : 답글 작성자 
+				// 로그인한 아이디와 답글 작성자가 같으면 댓글 등록 버튼이 보여진다! 
+				if(replyer.value == reply.replyer){
+					
+					replyDivStr += 
+					'<i class="fa-solid fa-delete-left" onclick="replyDelete('+reply.rno+')"></i>'
+					+ ' '
+					+ 	'<i class="fa-solid fa-pencil" onclick="replyUpdate('+reply.rno+')"></i></td>'   
+					+   '<td class = "fst-italic">'+reply.replyer+' <br>' +reply.replyDate+' </td>'  
+					+   '</tr>';
+				}
 			});
 			
 			replyDivStr +=

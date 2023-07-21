@@ -58,4 +58,19 @@ public class fileTest {
 		log.info(res);
 		
 	}
+	
+	@Test
+	public void getOne() {
+		List<FileVO> res =  filemapper.getOne(107, "176ee9ef-c79e-4fcd-9829-9954a11fda00");
+		res.forEach(file ->{
+			file.getBno();
+			file.getUuid();
+			file.getFilename();
+			file.getFiletype();
+			file.getUploadpath();
+			log.info(file);
+		});
+		log.info(res);
+		
+	}
 }

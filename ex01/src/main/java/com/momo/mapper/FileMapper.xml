@@ -21,4 +21,15 @@
 	<delete id="fileDelete">
 		DELETE FROM TBL_ATTACH WHERE BNO= #{bno} AND UUID = #{uuid}
 	</delete>
+	
+	
+	<!--  한 건 가져와서 삭제  -->
+	<select id="getOne" resultType="com.momo.vo.FileVO">
+		select t.*
+		, uploadpath||uuid||'_'||filename savePath 
+		, decode(fileType, 'I', uploadpath||'s_'||uuid||'_'||filename, ' ') s_savePath
+		 from tbl_attach t 
+		 where bno = #{bno} and uuid = #{uuid}
+
+	</select>
 </mapper>

@@ -16,4 +16,8 @@ public interface FileMapper {
 	
 	// 파일 삭제 
 	public int fileDelete(@Param("bno")int bno, @Param("uuid")String uuid);
+	
+	// 파일 목록 한건 불러오기
+	public List<FileVO> getOne (@Param("bno") int bno, @Param("uuid") String uuid);
+
 }

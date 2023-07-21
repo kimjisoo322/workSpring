@@ -47,8 +47,8 @@ public class BoardServiceTest {
 		board.setContent("수정) 내용");
 		board.setWriter("수정) userJIN");
 		System.out.println("==================게시물 수정===========");
-		int res = boardService.updateXML(board);
-		log.info(res);
+		//int res = boardService.updateXML(board);
+		//log.info(res);
 	}
 
 	@Test

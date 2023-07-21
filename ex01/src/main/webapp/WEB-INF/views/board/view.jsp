@@ -27,7 +27,10 @@
 		// 여러개를 적용해줄 수 있는 addEventListener (현재ver)
 		// window.onload는 한번만 적용 가능 (예전ver)
 		window.addEventListener('load', function(){
-		
+			
+		// 로그인한 아이디와 게시글의 작성자가 일치하면, 수정 - 삭제 버튼에 이벤트 적용
+		if(${userId eq board.writer}){
+			
 				//☆ 수정페이지 이동 > 수정 처리
 		btnEdit.addEventListener('click', function(){
 			viewForm.action='/board/edit';
@@ -38,7 +41,7 @@
 			viewForm.action='/board/deleteAction';
 			viewForm.submit();
 		});
-			
+	}	
 				//☆ 목록 페이지 이동
 		btnList.addEventListener('click', function(){
 			viewForm.action='/board/list_boot';
@@ -52,7 +55,54 @@
 		btnReplyWrite.addEventListener('click', function(){
 			replyWrite();
 		});
-
+				
+		// ★파일 목록 보여주기 list 
+		getFileList();	
+		
+			// ★파일 목록 출력 함수 
+		function getFileList(){
+			// bno 요소를 선택에서 그, 값을 가져옴
+			let bno = '${board.bno}';
+			console.log("bno : ", bno);
+			
+			fetch('/file/list/'+ bno)
+			.then(response => response.json())
+			.then(map => viewFileList(map));
+		}
+			
+		// ★파일 보여주기 함수
+		function viewFileList(map){
+			console.log("map : ", map);
+			let content = '';
+			
+			if(map.list.length > 0){
+				content += 
+					 
+					'<div class="mb-3" id="divFileupload"></div>'
+					+
+					 '<div class="mb-3"> '
+					+  ' <label for="attachFile" class="form-label">🌱첨부파일 목록</label> '
+					+  '	<div class = "form-control" id="attachFile"> '
+					
+			map.list.forEach(function(item, index){
+				// URL 인코딩 
+				let savePath = encodeURIComponent(item.savePath);
+				
+				console.log("item.savePath" , item.savePath);
+				content += "<a href ='/file/download?fileName="
+						+ savePath+"'>" 
+					+ item.filename 
+					+ '</a>'
+				+ '<br>' ;
+				})
+				content +=
+		 			 '	</div> '
+		 			+ '</div>  ';
+			}else{
+				content = '등록된 파일이 없습니다.';
+			}
+			divFileupload.innerHTML = content;
+		}
 });
 </script>
 </head>
@@ -80,10 +130,10 @@ ${searchWorld}
 <form method="get" name="viewForm" accept-charset="UTF-8" >
 	
 	<!-- 파라메터 -->
-	<input type ="hidden" name= "pageNo" value="${param.pageNo }" id = "pageNo" >
-	<input type ="hidden" name= "searchField" value="${param.searchField }" >
-	<input type ="hidden" name= "searchWorld" value="${param.searchWorld }" >
-   	<input type="hidden" name="bno" value="${board.bno}" id = "bno" >
+	<input type ="text" name= "pageNo" value="${param.pageNo }" id = "pageNo" >
+	<input type ="text" name= "searchField" value="${param.searchField }" >
+	<input type ="text" name= "searchWorld" value="${param.searchWorld }" >
+   	<input type="text" name="bno" value="${board.bno}" id = "bno" >
 	
 	<div class="mb-3">
 	  <label for="title" class="form-label">🌱제목</label>
@@ -99,10 +149,10 @@ ${searchWorld}
 	  <input type="text" class="form-control" id="writer" name ="writer" value = "${board.writer }" readonly></input>
 	</div>
 	
-	<!-- 	<div class="mb-3">
-	  <label for="files" class="form-label">🌱이미지</label>
-	  <input type="text" class="form-control" id="files" name ="files" value = "" readonly></input>
-	</div> -->
+	<!--  파일 목록을 뿌려주는 공간 -->
+	 <div class="mb-3" id="divFileupload">
+	 </div>
+	
 		<div class="mb-3">
 	  <label for="regdate" class="form-label">🌱등록일</label>
 	  <input type="text" class="form-control" id="regdate"  name ="regdate" value = "${board.regdate }" readonly></input>
@@ -112,22 +162,29 @@ ${searchWorld}
 	  <label for="updatedate" class="form-label">🌱수정일</label>
 	  <input type="text" class="form-control" id="updatedate"  name ="updatedate" value = "${board.updatedate }" readonly></input>
 	</div>
-	
-	  <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-	  <button type="button" class="btn btn-outline-primary" id="btnEdit">update</button>
-	  <button type="button" class="btn btn-outline-warning" id="btnDelete">delete</button>
+			
+	<!--  로그인한 사용자의 아이디와 게시글의 작성자가 일치하면 버튼을 노출 -->
+		<c:if test="${userId eq board.writer }">
+	  		<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+	  		<button type="button" class="btn btn-outline-primary" id="btnEdit">update</button>
+	  		<button type="button" class="btn btn-outline-warning" id="btnDelete">delete</button>
 	  </div>
+		
+		</c:if>
+		
 </form>
 
 <!--  댓글 리스트  -->
 <br>
 <h3>cHaT📧  </h3>
-
-<div class="input-group">
+	<!--  댓글 작성자를 로그인한 사용자의 아이디로 입력 -->
+	<input type ="text" name= "replyer" value="${userId }" id = "pageReply" >
+	<div class="input-group">
   <span class="input-group-text">댓글</span>
   <!-- 수정★ -->
   <input type ="hidden" name= "pageReply" value="${param.pageNo }" id = "pageReply" >
-  <input type="text" aria-label="First name" class="form-control" id = "replyer" value="작성자">
+  <input type="text" aria-label="First name" class="form-control" name= "replyer" value="${userId }" id = "pageReply" >
+<!--   <input type="text" aria-label="First name" class="form-control" id = "replyer" value="작성자"> -->
   <input type="text" aria-label="First name" class="form-control" id = "reply" placeholder="댓글을 입력해주세요" >
   <input type="button" id="btnReplyWrite"  value= "등록" aria-label="Last name" class="input-group-text">
 </div>

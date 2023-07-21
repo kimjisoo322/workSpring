@@ -41,7 +41,83 @@
 			editForm.method = "get";
 			editForm.submit();
 		});		
+		
+		
+		// ★파일 목록 보여주기 list 
+		getFileList();	
+		
 	});
+	// ★파일 목록 출력 함수 
+	function getFileList(){
+		// bno 요소를 선택에서 그, 값을 가져옴
+		let bno = '${board.bno}';
+		console.log("bno : ", bno);
+		
+		if(bno){
+		fetch('/file/list/'+ bno)
+		.then(response => response.json())
+		.then(map => viewFileList(map));
+		}
+	}
+		
+	// ★파일 보여주기 함수
+	function viewFileList(map){
+		console.log("map : ", map);
+		let content = '';
+		
+		if(map.list.length > 0){
+			content += 
+				 '<div class="mb-3"> '
+				+  ' <label for="attachFile" class="form-label">📌첨부파일 목록</label> '
+				+  '	<div class = "form-control" id="attachFile"> '
+				
+		map.list.forEach(function(item, index){
+			// URL 인코딩 
+			let savePath = encodeURIComponent(item.savePath);
+			
+			console.log("item.savePath" , item.savePath);
+			content += "<a href ='/file/download?fileName="
+					+ savePath+"'>" 
+					+ item.filename + '</a>'
+					+ ' <i onclick="attachFileDelete(this)" '
+					+ '   data-bno="'+item.bno+'" data-uuid="'+item.uuid+'" '
+					+ '   class="fa-regular fa-square-minus"></i>'
+			+ '<br>' ;
+			})
+			content +=
+	 			 	'</div> '
+	 			+ '</div>  ';
+		}else{
+			content = '등록된 파일이 없습니다.';
+		}
+		divFileupload.innerHTML = content;
+	}
+	
+	// 파일 삭제 콜백 함수  ( data 속성을 값을 가져오는 것 )
+    function attachFileDelete(e){
+	
+		let bno = e.dataset.bno;
+		let uuid = e.dataset.uuid;
+
+		console.log( "bno:",bno);
+		console.log("uuid:",uuid);
+
+		//fetch(`/file/delete/\${bno}/\${uuid}`)
+		fetch('/file/delete/'+ bno +'/'+uuid)
+		.then(response => response.json())
+		.then(map =>delRes(map));
+	}
+	// 파일 삭제 결과 처리 함수
+	function delRes(map){
+		if(map.result == 'REST_SUCCESS'){
+			// 삭제 성공
+			getFileList();
+		}else{
+			//console.log("result " , map.result);
+			// 삭제 실패			
+			alert("삭제 중 오류발생");
+		}
+	}
 </script>
 </head>
 <body>
@@ -65,15 +141,19 @@ ${param.searchWorld} --%>
     <a  class="btn btn-secondary w-30" href="#"  id = "btnList" role="button">목록으로 돌아가기</a>
   </div>
 
-<form action="/board/updateAction?bno=${board.bno}" method="post" accept-charset="UTF-8"  name="editForm">
+<form action="/board/updateAction?bno=${board.bno}" method="post" accept-charset="UTF-8"  name="editForm" enctype="multipart/form-data">
 	
 	<!--  파라메터  -->
-	<input type ="hidden" name= "pageNo" value=${param.pageNo }>
-	<input type ="hidden" name= "searchField" value=${param.searchField }>
-	<input type ="hidden" name= "searchWorld" value=${param.searchWorld }>
-   	<input type="hidden" name="bno" value="${board.bno }">
+	<c:if test="${not empty param.pageNo} ">
+		<input type ="text" name= "pageNo" value="${param.pageNo}">
+	</c:if>
 	
-	
+	<c:if test="${ empty param.pageNo} ">
+		<input type ="text" name= "pageNo" value="1">
+	</c:if>
+	<input type ="text" name= "searchField" value=${param.searchField }>
+	<input type ="text" name= "searchWorld" value=${param.searchWorld }>
+
 	<div class="mb-3">
 	  <label for="title" class="form-label">📌제목</label>
 	  <input type="text" class="form-control"  id="title"  name ="title" value = "${board.title }"></input>
@@ -86,7 +166,11 @@ ${param.searchWorld} --%>
 	<div class="mb-3">
 	  <label for="writer" class="form-label">📌작성자</label>
 	  <input type="text" class="form-control" id="writer" name ="writer" value = "${board.writer }"></input>
-	</div>
+	</div>	
+	
+	<!--  파일 목록을 뿌려주는 공간 -->
+	 <div id="divFileupload"></div>
+	
 	
 		<div class="mb-3">
 	  <label for="regdate" class="form-label">📌등록일</label>
@@ -99,8 +183,18 @@ ${param.searchWorld} --%>
 	</div>
 	
 	  <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+	  
+	  <c:if test="${not empty board.bno}" var="res">
+	  <input type="text" name="bno" value="${board.bno}">
 	  <button type="submit" class="btn btn-outline-primary" onclick="requestAction('/board/updateAction')">update</button>
 	  <button type="reset" class="btn btn-secondary">reset</button>
+	  </c:if>
+	  
+	  <!-- 없으면 등록하기 -->
+		<c:if test="${not res}">
+			<button type="submit" class="btn btn-primary btn-lg">글쓰기</button>
+		</c:if>
+	  
 	  </div>
 </form>
 </main>

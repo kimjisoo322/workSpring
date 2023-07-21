@@ -35,7 +35,7 @@
 <title>글쓰기 - 등록</title></head>
 <body>
 <%@ include file="../common/Header.jsp" %>    
-
+<c:set  value="${board}" var="board"></c:set>
 <main class="container">
  <div class="bg-light p-5 rounded">
     <h2>🔅글쓰기🔅</h2>
@@ -46,6 +46,12 @@
  <div class="list-group w-auto">
 <form action="/board/writeAction" method="post" accept-charset="UTF-8" name = "writeForm" enctype="multipart/form-data">
 
+<!-- 파라메터 -->
+<%-- 	<input type ="text" name= "pageNo" value="${param.pageNo ==''?'1':'' }" id = "pageNo" >
+	<input type ="text" name= "searchField" value="${param.searchField }" >
+	<input type ="text" name= "searchWorld" value="${param.searchWorld }" >
+   	<input type="text" name="bno" value="${board.bno}" id = "bno" > --%>
+	
 	<div class="mb-3">
 	  <label for="title" class="form-label">🌱제목</label>
 	  <input type="text" class="form-control" id="title"  name ="title" >
@@ -57,13 +63,23 @@
 	</div>
 	<div class="mb-3">
 	  <label for="writer" class="form-label">🌱작성자</label>
-	  <input type="text" class="form-control" id="writer" name ="writer"  >
+		
+		<!--  글쓰기 화면에서는 userID 보여줌 -->  
+	  <c:if test="${empty board.writer}">
+	  <input type="text" class="form-control" id="writer" name ="writer" readonly="readonly" value = "${userId}" >
+	  </c:if>
+	  
+	  	<!--  수정 화면에서는 작성자를 보여줌 -->
+	  <%--   <c:if test="${not empty board.writer}">
+	  <input type="text" class="form-control" id="writer" name ="writer" readonly="readonly" value = "${board.writer}" >
+	  </c:if>
+	   --%>
 	</div>
 	
 	<!--  파일 첨부  -->
 		<div class="mb-3">
-	  <label for="files" class="form-label">🌱파일</label>
-	  <input type="file" class="form-control" id="files" name ="files"  >
+	  <label for="files" class="form-label" >🌱파일</label>
+	  <input type="file" class="form-control" id="files" name ="files" multiple="multiple">
 	</div>
 	
 	  <div class="d-grid gap-2 d-md-flex justify-content-md-center">

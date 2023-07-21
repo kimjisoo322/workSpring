@@ -24,7 +24,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Controller
 @RequestMapping("/board/*")
-public class BoardController extends FileController {
+public class BoardController{
 
 	@Autowired
 	BoardService boardService;
@@ -61,6 +61,7 @@ public class BoardController extends FileController {
 	/**	
 	 * 	파라메터 자동 수집 (컨트롤러)
 	 *  : 기본 생성자가 있어야 함 , 기본 생성자를 이용해서 객체를 생성  => setter메서드를 이용해서 생성
+	 *   ( list 조회)
 	 * */
 	@GetMapping("list_boot")
 	public void list_boot(Model model, Criteria criteria) {
@@ -102,24 +103,30 @@ public class BoardController extends FileController {
 	
 	
 		// board에 bno가 저장되어있음 (insertSelectKey) = 파라메터로 넘길 때 주소값을 가지고 있음
-		int res = boardService.insertSelectKey(board);
-		
-		fileupload(files,board.getBno());
-		
-/**	 파일첨부
- * */
-		// redirect를 하게 되면 message가 유지가 안됨 (값을 가져가지 않음) -> redirect 하면서 값을 가져가고 싶을 때
-		// RedirectAttributes (영역을 가져감)
-		String message = "";
-		if (res > 0) {
-			message = board.getBno() + "번 글이 등록되었습니다.";
-			// rttr.addAttribute("message", message); -> ${param.message}
-			// 새로 고침하게 되면 메세지가 등록되지 않음 (세션저장)
-			rttr.addFlashAttribute("message", message);
-			return "redirect:/board/list_boot";
-		} else {
-			message = "등록 중 오류 발생하였습니다.";
-			model.addAttribute("message", message);
+		/**	 게시물 등록 + 파일 첨부의 역할!!
+		 * 			throw 하게 되면 화면으로 감 > 여기서 try-catch문으로 오류를 잡아주는 것!! */
+		int res;
+		try {
+			res = boardService.insertSelectKey(board, files);
+			String message = "";
+			if (res > 0) {
+				message = board.getBno() + "번 글이 등록되었습니다.";
+				// rttr.addAttribute("message", message); -> ${param.message}
+				// 새로 고침하게 되면 메세지가 등록되지 않음 (세션저장)
+				rttr.addFlashAttribute("message", message);
+				return "redirect:/board/list_boot";
+			} else {
+				message = "등록 중 오류 발생하였습니다.";
+				model.addAttribute("message", message);
+				return "/board/message";
+			}
+		} catch (Exception e) {
+			log.info(e.getMessage());
+			if(e.getMessage().indexOf("첨부파일")>-1) {
+				model.addAttribute("message", e.getMessage());
+			}else {
+				model.addAttribute("message", "등록 중 예외사항이 발 생!(이곳은 boardController_writeAction)");
+			}
 			return "/board/message";
 		}
 	}
@@ -138,18 +145,8 @@ public class BoardController extends FileController {
 	}
 	
 	@PostMapping("updateAction")
-	public String updateXML(BoardVO board, RedirectAttributes rttr, Model model, Criteria criteria) {
-		
-		// request.getParam("pageNo") 
-		// request.setAttribute("")
-		// addAttribute
-	//	=> 컨트롤러가 자동 수집해줌 (매개변수에 적어주면) => pageNo = 1 (쿼리스트링, get방식) = ${param.pageNo}
-	
-		// request.getAttribute('') 
-		// session.setAttribute 
-		// addFlashAttribute
-	//  => request 내장 객체에 저장 => ${pageNo}
-		
+	public String updateXML(BoardVO board, RedirectAttributes rttr, Model model, Criteria criteria, ArrayList<MultipartFile> files) throws Exception{
+
 		 BoardVO bd = boardService.getOne(board.getBno());
 		 
 		 bd.setTitle(bd.getTitle()); 
@@ -158,34 +155,44 @@ public class BoardController extends FileController {
 		 
 		 boardService.getListXML(criteria, model);
 		 
-		int res = boardService.updateXML(board);
+		int res = boardService.updateXML(board, files);
 		log.info(res);
 
-		String message = "";
-		if (res > 0) {
-			message = res + "건 수정되었습니다.";
-			/**
-			 * 	 [ 검색을 한 상태에서 수정하기를 했을 때, 수정이 완료되면 다시 그 페이지로 유지 하게 되는 것 ]  
-			 * */
-			rttr.addAttribute("pageNo", criteria.getPageNo());
-			rttr.addAttribute("searchField", criteria.getSearchField());
-			rttr.addAttribute("searchWorld", criteria.getSearchWorld());
-			rttr.addFlashAttribute("message", message); // ${message}
-		//	 rttr.addAttribute("message", message);					// ${param.message}
-			return "redirect:/board/list_boot";
-		} else {
-			message = "수정 중 오류가 발생하였습니다.";
-			model.addAttribute("message", message);
+		try {
+			String message = "";
+			if (res > 0) {
+				message = res + "건 수정되었습니다.";
+				/**
+				 * 	 [ 검색을 한 상태에서 수정하기를 했을 때, 수정이 완료되면 다시 그 페이지로 유지 하게 되는 것 ]  
+				 * */
+				rttr.addAttribute("pageNo", criteria.getPageNo());
+				rttr.addAttribute("searchField", criteria.getSearchField());
+				rttr.addAttribute("searchWorld", criteria.getSearchWorld());
+				rttr.addFlashAttribute("message", message); // ${message}
+			//	 rttr.addAttribute("message", message);					// ${param.message}
+				return "redirect:/board/view?bno="+ board.getBno();
+			} else {
+				message = "수정 중 오류가 발생하였습니다.";
+				model.addAttribute("message", message);
+				return "/board/message";
+			}
+		} catch (Exception e) {
+			log.info(e.getMessage());
+			if(e.getMessage().indexOf("첨부파일")>-1) {
+				model.addAttribute("message", e.getMessage());
+			}else {
+				model.addAttribute("message", "수정 중 예외사항이 발 생!(이곳은 boardController_writeAction)");
+			}
 			return "/board/message";
 		}
+		
 	}
 	
 	@GetMapping("deleteAction")
 	public String delete(int bno, RedirectAttributes rttr, Model model) {
 	
 		int res = boardService.delete(bno);
-		log.info("삭제" + bno);
-		log.info("삭제 res : " + res);
+
 		String message ="";
 		if (res > 0) {
 			message = "삭제되었습니다.";
