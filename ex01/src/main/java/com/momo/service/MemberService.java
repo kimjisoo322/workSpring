@@ -1,7 +1,10 @@
 package com.momo.service;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.momo.vo.Member;
 
@@ -16,4 +19,7 @@ public interface MemberService {
 	
 	// 아이디 중복체크 
 	public int idCheck(Member member);
+
+	// 네이버 로그인 
+	public void naverLogin(HttpServletRequest request, Model model);
 }

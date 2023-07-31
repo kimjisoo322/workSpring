@@ -2,6 +2,7 @@ package com.momo.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.momo.service.MemberService;
@@ -33,8 +35,23 @@ public class MemberController extends CommonRestController {
 		session.invalidate();
 		return "login";
 	}
-			  
-	@PostMapping("/loginAction") 
+	
+	@GetMapping("/login/naver")
+	public void naverLogin() {
+		
+	}
+	
+	@GetMapping("/login/naver_callback")
+	public String naverLogin_callback(HttpServletRequest request, Model model) {
+		memberService.naverLogin(request, model);
+		// 토근 얻어오는 작업 
+		// 사용자가 등록이 되어있는지 확인
+		
+		return "/login/naver";
+	}
+	
+	
+	@PostMapping("/ex/loginAction") 
 	public @ResponseBody Map<String, Object> loginAction(@RequestBody Member member, Model model, HttpSession session) { 
 		System.out.println("id : " + member.getId());
 		System.out.println("pw: " + member.getPw());
