@@ -47,7 +47,6 @@ public class ReplyController extends CommonRestController {
 	 * */
 	@GetMapping("/reply/list/{bno}/{page}")
 	public Map<String, Object> getList(@PathVariable("bno") int bno, @PathVariable("page") int page){
-		
 		//Map<String, Object> map = new HashMap<String, Object>();
 		
 		// 페이징 처리 
@@ -57,6 +56,8 @@ public class ReplyController extends CommonRestController {
 		// tbl_reply 테이블의 목록 
 		List<ReplyVO> list = replyService.getList(bno, criteria);
 		int totalCnt = replyService.totalCnt(bno);
+		
+		// map.put('result', 'success') result라는 변수에 success 담기
 		
 		// 페이지 블럭 생성
 		PageDto pageDto = new PageDto(criteria, totalCnt);
@@ -115,8 +116,11 @@ public class ReplyController extends CommonRestController {
 		 * 
 		 * int res = replyService.updateReply(reply);
 		 * 
-		 * log.info("================댓글 수정=========" + res); if(res>0) {
-		 * map.put("result", "success"); }else { map.put("result", "fail");
+		 * log.info("================댓글 수정=========" + res);
+		 *  if(res>0) {
+		 * map.put("result", "success"); 
+		 * }else {
+		 * map.put("result", "fail");
 		 * map.put("message", "수정 중 오류 발생!"); }
 		 */	
 		return responseEditMap(replyService.updateReply(reply));
